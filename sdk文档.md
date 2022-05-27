@@ -4,9 +4,13 @@
 
 https://www.processon.com/diagraming/6290877c5653bb788c7a3617
 
+![](img/image-20220527162121324.png)
+
 ### 2，雷达服务器交互流程图
 
 https://www.processon.com/diagraming/6290877c5653bb788c7a3617
+
+![](img/image-20220527163137967.png)
 
 ```java
 
@@ -71,6 +75,8 @@ public class RadarReportOrAlertCallBack implements RadarHandlerCallBack {
 ```
 
 ​																												图2
+
+![](img/image-20220527163756431.png)
 
 ```java
 
@@ -155,15 +161,15 @@ idea 打开sdk ， 配置maven ， install ，在自己的项目中引入maven �
 
 ​																							把sdk打maven坐标
 
-![image-20220527164620739](img\image-20220527164620739.png)
+![image-20220527164620739](img/image-20220527164620739.png)
 
 ​																								     引入sdk
 
-![](img\image-20220527164650227.png)
+![](img/image-20220527164650227.png)
 
 ​																									启动类扫描包
 
-![image-20220527164747899](img\image-20220527164747899.png)
+![image-20220527164747899](img/image-20220527164747899.png)
 
 
 
@@ -171,7 +177,7 @@ idea 打开sdk ， 配置maven ， install ，在自己的项目中引入maven �
 
 ### 1，主动发送数据给雷达（get）
 
-![image-20220527170025692](img\image-20220527170025692.png)
+![image-20220527170025692](img/image-20220527170025692.png)
 
 ```
 更多协议处理器请查看 com.timevary.radar.tcp.service.toRadar包
@@ -179,7 +185,7 @@ idea 打开sdk ， 配置maven ， install ，在自己的项目中引入maven �
 
 ### 2，主动发送数据给雷达（set）
 
-​	![image-20220527170643920](img\image-20220527170643920.png)
+​	![image-20220527170643920](img/image-20220527170643920.png)
 
 
 
