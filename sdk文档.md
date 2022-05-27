@@ -1,30 +1,144 @@
-## 一，架构解析
+## 一，架构解析 
 
 ### 1，sdk启动流程图
 
-![](D:\company_project\呼吸心率\sdk\mavve-radar-tcp-spring-boot-starter\img\image-20220527162202930.png)
+https://www.processon.com/diagraming/6290877c5653bb788c7a3617
 
 ### 2，雷达服务器交互流程图
 
-![](D:\company_project\呼吸心率\sdk\mavve-radar-tcp-spring-boot-starter\img\image-20220527163137967.png)
+https://www.processon.com/diagraming/6290877c5653bb788c7a3617
 
-![](D:\company_project\呼吸心率\sdk\mavve-radar-tcp-spring-boot-starter\img\image-20220527163200872.png)
+```java
 
-​																											图1
+/**
+ * @author ：ywb
+ * @date ：Created in 2022/1/7 10:35
+ * @modified By：
+ * 呼吸低bpm报警 
+ * 雷达主动报警，会调用到对应的协议处理器，然后调用雷达内置回调
+ */
+@Service
+public class BreathLowBpmHandler extends AbstractFromRadarProtocolDataHandler {
 
-![image-20220527163236624](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220527163236624.png)
+    public BreathLowBpmHandler(RadarHandlerCallBack handlerCallBack) {
+        super(handlerCallBack);
+    }
+
+    @Override
+    public Object process(RadarProtocolData protocolData) {
+        //处理数据，不须返回
+        protocolData.setFunction(FunctionEnum.breathLowBpmAlert);
+        handlerCallBack.callBack(protocolData);
+        return null;
+    }
+
+    @Override
+    public Set<FunctionEnum> interests() {
+        return Sets.newHashSet(FunctionEnum.breathLowBpmAlert);
+    }
+}
+
+```
+
+​																										图1
+
+```java
+
+/**
+ * @author ：ywb
+ * @date ：Created in 2022/1/7 11:03
+ * @modified By：
+ * 雷达内置回调类
+ * 用户需自定义回调实现 RadarHandlerCallBackForConsumer 加上@Service注解 ，后面有案例
+ */
+@Service
+@Slf4j
+public class RadarReportOrAlertCallBack implements RadarHandlerCallBack {
+
+    @Autowired(required = false)
+    RadarHandlerCallBackForConsumer radarHandlerCallBackForConsumer;
+
+    @Override
+    public void callBack(RadarProtocolData radarProtocolData) {
+        if (radarHandlerCallBackForConsumer != null) {
+            radarHandlerCallBackForConsumer.callBack(radarProtocolData);
+        } else {
+            throw new RuntimeException("No custom callback");
+        }
+    }
+}
+
+```
 
 ​																												图2
 
-![image-20220527163756431](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220527163756431.png)
+```java
 
-![image-20220527163820861](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220527163820861.png)
+/**
+ * @author ：ywb
+ * @date ：Created in 2022/1/8 17:54
+ * @modified By：
+ * 获取呼吸BPM高阈值报警 ， 服务器给雷达发送命令，从而得到结果
+ */
+@Service
+public class GetBreathBpmHeightThreshold extends AbstractToRadarProtocolDataHandler {
+
+    public Integer process(String radarId) throws Exception {
+        //给雷达发送命令，返回结果
+        ByteBuf byteBuf = super.processDo(radarId, FunctionEnum.getBreathBpmHeightThreshold);
+        //按照雷达协议读取相关数据
+        int readInt = byteBuf.readInt();
+        byteBuf.release();
+        return readInt;
+    }
+
+}
+
+```
 
 ​																												图3
 
 
 
-![image-20220527163942475](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220527163942475.png)
+```java
+
+/**
+ * @author ：ywb
+ * @date ：Created in 2022/1/7 11:30
+ * @modified By：
+ * 设置雷达参数，用户注入SetRadarParams，调用 process(GetSetRadarParamVo getRadarParamVo) 即可
+ * 超时，或者失败就重试5次
+ */
+@Service
+@Slf4j
+public class SetRadarParams extends AbstractToRadarProtocolDataHandler {
+    @Autowired
+    private RadarTcpServer radarTcpServer;
+
+    public ResponseResult process(GetSetRadarParamVo getRadarParamVo) {
+        log.debug("set function {}", getRadarParamVo);
+        ResponseResult check = RadarCheck.check(getRadarParamVo, radarTcpServer);
+        if (check != null) {
+            return check;
+        }
+        try {
+            return doSet(getRadarParamVo);
+        } catch (Exception e) {
+            //可能超时
+            for (int i = 0; i < 5; i++) {
+                try {
+                    return doSet(getRadarParamVo);
+                } catch (RemotingException | InterruptedException ex) {
+                    log.error("设置超时:{}，正在重试...", getRadarParamVo.getCode());
+                }
+            }
+        }
+        return new ResponseResult(ResponseCode.SERVER_ERROR);
+    }
+   .......
+}
+
+```
 
 ​																											图4
 
@@ -39,7 +153,17 @@ clone mavve-radar-tcp-spring-boot-starter   git克隆sdk
 idea 打开sdk ， 配置maven ， install ，在自己的项目中引入maven ， 启动类中扫描  com.timevary
 ```
 
-![image-20220527164620739](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220527164620739.png)![image-20220527164650227](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220527164650227.png)![image-20220527164747899](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220527164747899.png)
+​																							把sdk打maven坐标
+
+![image-20220527164620739](img\image-20220527164620739.png)
+
+​																								     引入sdk
+
+![](img\image-20220527164650227.png)
+
+​																									启动类扫描包
+
+![image-20220527164747899](img\image-20220527164747899.png)
 
 
 
@@ -47,7 +171,7 @@ idea 打开sdk ， 配置maven ， install ，在自己的项目中引入maven �
 
 ### 1，主动发送数据给雷达（get）
 
-![image-20220527170025692](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220527170025692.png)
+![image-20220527170025692](img\image-20220527170025692.png)
 
 ```
 更多协议处理器请查看 com.timevary.radar.tcp.service.toRadar包
@@ -55,7 +179,7 @@ idea 打开sdk ， 配置maven ， install ，在自己的项目中引入maven �
 
 ### 2，主动发送数据给雷达（set）
 
-​	![image-20220527170643920](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220527170643920.png)
+​	![image-20220527170643920](img\image-20220527170643920.png)
 
 
 
