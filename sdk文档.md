@@ -2,13 +2,13 @@
 
 ### 1，sdk启动流程图
 
-![image-20220527162202930](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220527162202930.png)
+![](D:\company_project\呼吸心率\sdk\mavve-radar-tcp-spring-boot-starter\img\image-20220527162202930.png)
 
 ### 2，雷达服务器交互流程图
 
-![image-20220527163137967](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220527163137967.png)
+![](D:\company_project\呼吸心率\sdk\mavve-radar-tcp-spring-boot-starter\img\image-20220527163137967.png)
 
-![image-20220527163200872](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220527163200872.png)
+![](D:\company_project\呼吸心率\sdk\mavve-radar-tcp-spring-boot-starter\img\image-20220527163200872.png)
 
 ​																											图1
 
