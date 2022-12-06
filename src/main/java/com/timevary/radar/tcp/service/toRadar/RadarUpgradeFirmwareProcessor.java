@@ -31,7 +31,7 @@ public class RadarUpgradeFirmwareProcessor extends SyncUserProcessor<RadarUpgrad
     /**
      * 每次传输升级数据块大小
      */
-    private static final int BLOCK_SIZE = 230;
+    private static final int BLOCK_SIZE = 256;
     private static final int TIMEOUT_MILLS = 60*1000;
     public RadarUpgradeFirmwareProcessor(RadarTcpServer radarTcpServer) {
         this.radarTcpServer = radarTcpServer;
@@ -55,10 +55,6 @@ public class RadarUpgradeFirmwareProcessor extends SyncUserProcessor<RadarUpgrad
             dto.setRadarIds(radarIds);
         }catch (Exception e){
             log.error("radar upgrade firmware error", e);
-//            if(e instanceof RadarServerException){
-//                throw (RadarServerException)e;
-//            }
-//            throw new RadarServerException(e);
         }
         return dto;
     }
@@ -126,7 +122,7 @@ public class RadarUpgradeFirmwareProcessor extends SyncUserProcessor<RadarUpgrad
             log.debug("end upgrade firmware successful  - radarId: {}", radarId);
             return radarId;
         } catch (Throwable e) {
-            log.error("radar upgrade firmware error - radarId: {}" , radarId);
+            log.error("radar upgrade firmware error - radarId: {}", e, radarId);
         }
         return null;
     }
@@ -140,24 +136,20 @@ public class RadarUpgradeFirmwareProcessor extends SyncUserProcessor<RadarUpgrad
      * @throws RemotingException
      * @throws InterruptedException
      */
-    private boolean callRadar(String radarId, byte[] data, FunctionEnum functionEnum) throws RemotingException {
+    private boolean callRadar(String radarId, byte[] data, FunctionEnum functionEnum){
         int retryCount = DEFAULT_RETRY_COUNT;
+        RadarProtocolData radarProtocolData = RadarProtocolData.newEmptyInstance()
+                .fillFunctionData(radarId, functionEnum, data);
         while (retryCount-->0) {
             try {
-                RadarProtocolData radarProtocolData = RadarProtocolData
-                        .builder()
-                        .data(data)
-                        .radarId(radarId)
-                        .function(functionEnum)
-                        .build();
                 Object obj = radarTcpServer.invokeSync(radarProtocolData, TIMEOUT_MILLS);
                 RadarProtocolData retObj = (RadarProtocolData) Objects.requireNonNull(obj);
-                return ByteUtil.bytes2IntBig(retObj.getData()) == 0;
-//            }catch (RadarNotInThisServerException| RadarNotConnectException e){
-//                log.error("upgrade radar firmware error, connection closed cancel retry count: {}", retryCount, e);
-//                return true;
+                return ByteUtil.bytes2IntBig(retObj.getData()) != 1;
             }catch (Exception e){
-                log.error("upgrade radar firmware error, retry count: {}", retryCount, e);
+                log.error("upgrade radar firmware error, retry count: {} - {}", retryCount, functionEnum, e);
+                if(retryCount==0){
+                    return true;
+                }
             }
         }
         return false;

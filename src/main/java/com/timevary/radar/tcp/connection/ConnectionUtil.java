@@ -12,9 +12,14 @@ import com.alipay.remoting.Connection;
 public class ConnectionUtil {
 
     public static final String ATTR_RADAR_Id = "radarId";
+    public static final String ATTR_VERSION = "radarVersion";
 
     public static String getRadarId(Connection connection){
         Object obj = connection.getAttribute(ATTR_RADAR_Id);
+        return obj==null?null:obj.toString();
+    }
+    public static String getRadarVersion(Connection connection){
+        Object obj = connection.getAttribute(ATTR_VERSION);
         return obj==null?null:obj.toString();
     }
 

@@ -1,15 +1,18 @@
 
 package com.timevary.radar.tcp.server;
 
+import com.alipay.remoting.Connection;
 import com.alipay.remoting.ConnectionEventType;
 import com.alipay.remoting.InvokeContext;
 import com.alipay.remoting.LifeCycleException;
 import com.alipay.remoting.config.Configs;
 import com.alipay.remoting.config.switches.GlobalSwitch;
 import com.alipay.remoting.exception.RemotingException;
+import com.alipay.remoting.rpc.RpcResponseFuture;
 import com.alipay.remoting.rpc.RpcServer;
 import com.google.common.base.Strings;
 import com.timevary.radar.tcp.config.RadarTcpServerProperties;
+import com.timevary.radar.tcp.connection.ConnectionUtil;
 import com.timevary.radar.tcp.connection.DisconnectServerEventProcessor;
 import com.timevary.radar.tcp.connection.RadarAddressHashMap;
 import com.timevary.radar.tcp.connection.RadarAddressMap;
@@ -17,11 +20,13 @@ import com.timevary.radar.tcp.hander.base.RadarProtocolDataHandler;
 import com.timevary.radar.tcp.hander.base.RadarProtocolDataHandlerManager;
 import com.timevary.radar.tcp.hander.callback.RadarHandlerCallBack;
 import com.timevary.radar.tcp.processor.RadarProtocolDataServerAsyncProcessor;
+import com.timevary.radar.tcp.protocol.FunctionEnum;
 import com.timevary.radar.tcp.protocol.RadarProtocolData;
 import com.timevary.radar.tcp.protocol.RadarProtocolManager;
 import com.timevary.radar.tcp.serilazer.RadarSerializer;
 import com.timevary.radar.tcp.serilazer.RadarSerializerManager;
 import com.timevary.radar.tcp.service.fromRadar.*;
+import com.timevary.radar.tcp.util.ByteUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -126,12 +131,12 @@ public class RadarTcpServer extends RpcServer {
         }
     }
 
-    public static RadarTcpServer radarServerStarter( RadarProtocolDataHandler... handlers) {
+    public static RadarTcpServer radarServerStarter(RadarProtocolDataHandler... handlers) {
         List<RadarProtocolDataHandler> radarProtocolDataHandlers = Arrays.asList(handlers);
         return radarServerStarter(radarProtocolDataHandlers);
     }
 
-    public static RadarTcpServer radarServerStarter( RadarHandlerCallBack callBack) {
+    public static RadarTcpServer radarServerStarter(RadarHandlerCallBack callBack) {
         List<RadarProtocolDataHandler> handlers = new ArrayList<>();
         handlers.add(new BreathHeightBpmHandler(callBack));
         handlers.add(new BreathLowBpmHandler(callBack));
@@ -148,7 +153,7 @@ public class RadarTcpServer extends RpcServer {
         return radarServerStarter(handlers);
     }
 
-    public static RadarTcpServer radarServerStarter( List<RadarProtocolDataHandler> handlers) {
+    public static RadarTcpServer radarServerStarter(List<RadarProtocolDataHandler> handlers) {
         System.setProperty("logging.path", "./logs/server");
         String serverAddress = "127.0.0.1:8899";
         RadarAddressMap radarAddressMap = new RadarAddressHashMap(serverAddress);
@@ -161,8 +166,10 @@ public class RadarTcpServer extends RpcServer {
         radarTcpServer.startup();
         return radarTcpServer;
     }
+
     /**
      * 采用雷达协议数据同步调用雷达
+     *
      * @param requestObj
      * @param timeoutMillis
      * @return
@@ -177,6 +184,7 @@ public class RadarTcpServer extends RpcServer {
 
     /**
      * 采用雷达协议数据同步调用雷达
+     *
      * @param requestObj
      * @param invokeContext
      * @param timeoutMillis
@@ -187,12 +195,41 @@ public class RadarTcpServer extends RpcServer {
     public Object invokeSync(RadarProtocolData requestObj, InvokeContext invokeContext, int timeoutMillis)
             throws RemotingException, InterruptedException {
         String radarAddress = getRadarAddress(requestObj.getRadarId());
-        if(Strings.isNullOrEmpty(radarAddress)){
+        if (Strings.isNullOrEmpty(radarAddress)) {
             log.error("失败");
             return null;
 //            throw new Exception("radar ["+requestObj.getRadarId()+"] not connect in this server-"+getServerAddress());
         }
         invokeContext.put(InvokeContext.BOLT_CUSTOM_SERIALIZER, RadarSerializer.IDX_BYTE);
         return super.invokeSync(radarAddress, requestObj, invokeContext, timeoutMillis);
+    }
+
+    /**
+     * 软重启雷达，让雷达重新发送上报信息-0x0001
+     */
+    public void softRebootRadar(Connection connection) {
+        log.debug("soft reboot the radar {}", connection.getRemoteAddress());
+        RadarProtocolData rebootData = RadarProtocolData.newFunctionInstance(FunctionEnum.softReboot,
+                ByteUtil.intToByteBig(0));
+        try {
+            invokeAsyncWithConnection(connection, rebootData);
+        } catch (RemotingException e) {
+            log.error("soft reboot radar error {}", e, connection.getRemoteAddress());
+        }
+    }
+
+
+    /**
+     * 采用雷达协议数据异步调用到指定连接客户端
+     *
+     * @param requestObj
+     * @throws RemotingException
+     * @throws InterruptedException
+     */
+    public RpcResponseFuture invokeAsyncWithConnection(Connection connection, RadarProtocolData requestObj)
+            throws RemotingException {
+        InvokeContext invokeContext = new InvokeContext();
+        invokeContext.put(InvokeContext.BOLT_CUSTOM_SERIALIZER, RadarSerializer.IDX_BYTE);
+        return invokeWithFuture(connection, requestObj, invokeContext, 3000 * 10);
     }
 }

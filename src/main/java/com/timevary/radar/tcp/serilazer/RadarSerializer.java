@@ -24,6 +24,7 @@ public class RadarSerializer implements Serializer {
     public static final Byte IDX_BYTE = 4;
     private static final Charset charset = StandardCharsets.UTF_8;
     private static final byte[] EMPTY_ARRAY = new byte[0];
+    private static final int RADAR_PROTOCOL_FUNCTION_BYTE_LENGTH = 2;
 
     @Override
     public byte[] serialize(Object object) throws CodecException {
@@ -60,47 +61,78 @@ public class RadarSerializer implements Serializer {
 
     @Override
     public <T> T deserialize(byte[] bytes, String clazz) {
-        ByteBuf byteBuf = PooledByteBufAllocator.DEFAULT.heapBuffer();
-        try {
-            if (bytes.length > 0) {
-                RadarProtocolData radarProtocolData = new RadarProtocolData();
-                byteBuf.writeBytes(bytes);
-                short function = byteBuf.readShort();
-                radarProtocolData.setFunction(FunctionEnum.from(function));
-                if (radarProtocolData.getFunction() != FunctionEnum.UNDEFINED) {
-                    byte[] radar = new byte[12];
-                    byte[] data = new byte[0];
-                    switch (FunctionEnum.from(function)) {
-                        case createConnection:
-                            byteBuf.readByte();
-                            byte[] version = new byte[4];
-                            System.arraycopy(bytes, 3, version, 0, version.length);
-                            String versionStr = version[0] + "." + version[1] + "." + version[2] + "." + version[3];
-                            System.arraycopy(bytes, 2 + 1 + version.length, radar, 0, radar.length);
-                            System.out.println("设置雷达版本号:"+radarProtocolData.getRadarVersion());
-                            radarProtocolData.setRadarId(ByteUtils.bytesToHexString(radar));
-                            break;
-                        //                            System.arraycopy(bytes, 2 + data.length, radar, 0, radar.length);
-                        case getRadarId:
-                            byteBuf.readBytes(radar);
-                            radarProtocolData.setRadarId(ByteUtils.bytesToHexString(radar));
-                            break;
-                        default:
-                            data = new byte[bytes.length - 2];
-                            System.arraycopy(bytes, 2, data, 0, data.length);
-                            break;
-                    }
+        RadarProtocolData radarProtocolData = new RadarProtocolData();
+        if (bytes.length > 0) {
+            short function = fromBytes(bytes[0], bytes[1]);
+            FunctionEnum deserializedFunction = FunctionEnum.from(function);
+            if (deserializedFunction != FunctionEnum.UNDEFINED) {
+                radarProtocolData.setFunction(deserializedFunction);
+                int dataLen = bytes.length - RADAR_PROTOCOL_FUNCTION_BYTE_LENGTH;
+                if (dataLen > 0) {
+                    byte[] data = new byte[dataLen];
+                    System.arraycopy(bytes, 2, data, 0, dataLen);
                     radarProtocolData.setData(data);
-                    return (T) radarProtocolData;
-                } else {
-                    return (T) bytes;
                 }
+            } else {
+                //不能解析为RadarProtocolData协议数据，返回原始数据
+                radarProtocolData.setFunction(FunctionEnum.UNDEFINED);
+                radarProtocolData.setData(bytes);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            byteBuf.release();
         }
-        return null;
+        return (T)radarProtocolData;
     }
+    /**
+     * 大端序解析2字节为short
+     * @param b1
+     * @param b2
+     * @return
+     */
+    public static short fromBytes(byte b1, byte b2) {
+        return (short)(b1 << 8 | b2 & 255);
+    }
+//    @Override
+//    public <T> T deserialize(byte[] bytes, String clazz) {
+//        ByteBuf byteBuf = PooledByteBufAllocator.DEFAULT.heapBuffer();
+//        try {
+//            if (bytes.length > 0) {
+//                RadarProtocolData radarProtocolData = new RadarProtocolData();
+//                byteBuf.writeBytes(bytes);
+//                short function = byteBuf.readShort();
+//                radarProtocolData.setFunction(FunctionEnum.from(function));
+//                if (radarProtocolData.getFunction() != FunctionEnum.UNDEFINED) {
+//                    byte[] radar = new byte[12];
+//                    byte[] data = new byte[0];
+//                    switch (FunctionEnum.from(function)) {
+//                        case createConnection:
+//                            byteBuf.readByte();
+//                            byte[] version = new byte[4];
+//                            System.arraycopy(bytes, 3, version, 0, version.length);
+//                            String versionStr = version[0] + "." + version[1] + "." + version[2] + "." + version[3];
+//                            System.arraycopy(bytes, 2 + 1 + version.length, radar, 0, radar.length);
+//                            System.out.println("设置雷达版本号:"+radarProtocolData.getRadarVersion());
+//                            radarProtocolData.setRadarId(ByteUtils.bytesToHexString(radar));
+//                            break;
+//                        //                            System.arraycopy(bytes, 2 + data.length, radar, 0, radar.length);
+//                        case getRadarId:
+//                            byteBuf.readBytes(radar);
+//                            radarProtocolData.setRadarId(ByteUtils.bytesToHexString(radar));
+//                            break;
+//                        default:
+//                            data = new byte[bytes.length - 2];
+//                            System.arraycopy(bytes, 2, data, 0, data.length);
+//                            break;
+//                    }
+//                    radarProtocolData.setData(data);
+//                    return (T) radarProtocolData;
+//                } else {
+//                    return (T) bytes;
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            byteBuf.release();
+//        }
+//        return null;
+//    }
 }

@@ -9,10 +9,8 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.timevary</groupId>
-    <artifactId>mavve-radar-tcp-spring-boot-starter</artifactId>
-    <version>1.0.1</version>
-    <name>mavve-radar-tcp-spring-boot-starter</name>
-    <description>Demo project for Spring Boot</description>
+    <artifactId>AerosenseWavve</artifactId>
+    <version>1.0.2</version>
     <properties>
         <java.version>1.8</java.version>
     </properties>

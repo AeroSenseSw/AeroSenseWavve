@@ -63,6 +63,37 @@ public class RadarProtocolData implements Serializable {
     public void setData(byte[] data) {
         this.data = data;
     }
+    /**
+     * 创建一下新的空实例
+     * @return
+     */
+    public static final RadarProtocolData newEmptyInstance(){
+        return new RadarProtocolData();
+    }
+    /**
+     * 填充function
+     * @param id
+     * @param function
+     * @param data
+     * @return
+     */
+    public RadarProtocolData fillFunctionData(String id, FunctionEnum function, byte[] data){
+        this.setRadarId(id);
+        this.setFunction(function);
+        this.setData(data);
+        return this;
+    }
+
+    /**
+     * 创建一下新的指定function实例
+     * @return
+     */
+    public static final RadarProtocolData newFunctionInstance(FunctionEnum function, byte[] data){
+        RadarProtocolData radarProtocolData = RadarProtocolData.newEmptyInstance();
+        radarProtocolData.setFunction(function);
+        radarProtocolData.setData(data);
+        return radarProtocolData;
+    }
 
     @Override
     public String toString() {

@@ -80,7 +80,7 @@ public class UpdateRadarHandler {
     private boolean updateFrameFile(RadarProtocolData protocolData, File file) {
         protocolData.setFunction(FunctionEnum.issueFirmware);
         byte[] firmwareFile = readFirmware.readFile(file);
-        int count = (int) Math.ceil(firmwareFile.length / 240f);
+        int count = (int) Math.ceil(firmwareFile.length / 256f);
         final int frameLen = 240;
         int start = 0;
         int i = 0;

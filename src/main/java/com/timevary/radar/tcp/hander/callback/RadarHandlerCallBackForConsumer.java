@@ -1,6 +1,6 @@
 package com.timevary.radar.tcp.hander.callback;
 
-import com.timevary.radar.tcp.protocol.RadarProtocolData;
+import com.timevary.radar.tcp.domain.dto.CallBackDto;
 
 /**
  * @author ：ywb
@@ -8,5 +8,5 @@ import com.timevary.radar.tcp.protocol.RadarProtocolData;
  * @modified By：
  */
 public interface RadarHandlerCallBackForConsumer {
-    void callBack(RadarProtocolData radarProtocolData);
+    void callBack(CallBackDto callBackDto);
 }
