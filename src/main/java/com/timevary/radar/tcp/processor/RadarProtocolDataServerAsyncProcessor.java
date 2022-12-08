@@ -54,6 +54,7 @@ public class RadarProtocolDataServerAsyncProcessor extends AsyncUserProcessor<Ra
         }
 
         RadarProtocolDataHandler handler = RadarProtocolDataHandlerManager.getHandler(radarProtocolData.getFunction());
+        radarProtocolData.setRadarId(ConnectionUtil.getRadarId(bizContext.getConnection()));
         if (handler == null) {
             if (log.isWarnEnabled()) {
                 log.warn("no handler response: null {} {}", radarProtocolData.getRadarId(),
