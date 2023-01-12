@@ -66,7 +66,6 @@ public class RadarReportOrAlertCallBack implements RadarHandlerCallBack {
             } finally {
                 byteBuf.release();
             }
-
             radarHandlerCallBackForConsumer.callBack(callBackDto);
         } else {
             throw new RuntimeException("No custom callback");
