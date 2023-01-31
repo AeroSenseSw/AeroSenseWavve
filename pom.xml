@@ -8,7 +8,7 @@
         <version>2.3.12.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.timevary</groupId>
+    <groupId>com.aerosnese</groupId>
     <artifactId>AerosenseWavve</artifactId>
     <version>1.0.2</version>
     <properties>

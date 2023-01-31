@@ -1,40 +1,37 @@
-## Ⅰ， quick start
+## 1， Quick start
 
-### 1，prepare sdk
-
-```
-git clone https://github.com/AeroSenseSw/AeroSenseWavve.git
-open in idea , change maven config
-maven clean 
-maven install 
-```
-
-### 2, import sdk
+### 1.1， To prepare SDK
 
 ```
-create your radar_server
-import sdk from your local maven 
+Use idea to open the current project. Please remember to adjust your own maven.
+Then run maven clean and maven install.
+```
+
+### 1.2. To load the SDK
+
+```
+To create a new radar server project and load the SDK of maven install.
 ```
 
 ![image-20220527170025692](../imgs/import_sdk.png)
 
-## 三，Startup class scan package
+## 2.To use the SDK
 
-### 1，actively send data to radar（get radar settings）
+### 2.1 Example codes to send data to the radar (to acquire the radar parameter).
 
 ![image-20220527170025692](../imgs/get.png)
 
-### 2， actively send data to radar（set radar settings）
+### 2.2 Example codes to send data to the radar (to set the radar parameter). 
 
 ​	![image-20220527170643920](../imgs/set.png)
 
 ```
-For more protocol handlers please see the com.timevary.radar.tcp.service.toRadar package
+For more information, please refer to the package com.aerosnese.radar.tcp.service.toRadar
 ```
 
 
 
-### 3，radar report 
+### 3.The radar proactively sends data to the server
 
-![image-20220527170643920](../imgs/report.png)
+![image-20220527170643920](../imgs/report_3.png)
 
