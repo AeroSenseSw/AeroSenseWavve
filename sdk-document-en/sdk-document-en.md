@@ -17,11 +17,15 @@ To create a new radar server project and load the SDK of maven install.
 
 ## 2.To use the SDK
 
-### 2.1 Example codes to send data to the radar (to acquire the radar parameter).
+### 2.1 scan package.
+
+![image-20220527170025692](../imgs/scan.png)
+
+### 2.2 Example codes to send data to the radar (to acquire the radar parameter).
 
 ![image-20220527170025692](../imgs/get.png)
 
-### 2.2 Example codes to send data to the radar (to set the radar parameter). 
+### 2.3 Example codes to send data to the radar (to set the radar parameter). 
 
 ​	![image-20220527170643920](../imgs/set.png)
 
