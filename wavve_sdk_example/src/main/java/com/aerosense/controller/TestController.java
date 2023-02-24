@@ -1,4 +1,4 @@
-package com.aerosense;
+package com.aerosense.controller;
 
 import com.aerosense.radar.tcp.protocol.FunctionEnum;
 import com.aerosense.radar.tcp.protocol.RadarProtocolData;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @author ：ywb
+ * @author ：aerosense
  * @date ：Created in 2022/11/29 16:19
  * @modified By：
  */
@@ -19,6 +19,13 @@ public class TestController {
 
     @Autowired
     private SetRadarParams setRadarParams;
+    @Autowired
+    private GetReportInterval getReportInterval;
+
+    @RequestMapping("/testSet")
+    public Object testGet() throws Exception {
+        return getReportInterval.process("13360111504B57313534033855");
+    }
 
     @RequestMapping("/testSet")
     public Object testSet() throws RemotingException, InterruptedException {

@@ -4,7 +4,7 @@
 //import org.springframework.boot.test.context.SpringBootTest;
 //
 //@SpringBootTest
-//class TestsdkApplicationTests {
+//class wavve_sdk_exampleApplicationTests {
 //
 //    @Test
 //    void contextLoads() {
