@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.aerosense</groupId>
     <artifactId>wavve_sdk_example</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>wavve_sdk_example</name>
     <description>wavve_sdk_example</description>
 
@@ -18,7 +18,7 @@
     <dependencies>
 
         <dependency>
-            <groupId>com.aerosenese</groupId>
+            <groupId>com.aerosense</groupId>
             <artifactId>AerosenseWavve</artifactId>
             <version>1.0.2</version>
         </dependency>

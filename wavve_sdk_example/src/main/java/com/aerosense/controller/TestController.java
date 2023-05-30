@@ -2,6 +2,7 @@ package com.aerosense.controller;
 
 import com.aerosense.radar.tcp.protocol.FunctionEnum;
 import com.aerosense.radar.tcp.protocol.RadarProtocolData;
+import com.aerosense.radar.tcp.service.toRadar.GetReportInterval;
 import com.aerosense.radar.tcp.service.toRadar.SetRadarParams;
 import com.aerosense.radar.tcp.util.ByteUtil;
 import com.alipay.remoting.exception.RemotingException;
@@ -22,7 +23,7 @@ public class TestController {
     @Autowired
     private GetReportInterval getReportInterval;
 
-    @RequestMapping("/testSet")
+    @RequestMapping("/testGet")
     public Object testGet() throws Exception {
         return getReportInterval.process("13360111504B57313534033855");
     }
