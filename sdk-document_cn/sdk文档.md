@@ -31,7 +31,7 @@
 ​	![image-20220527170643920](../imgs/set.png)
 
 ```
-有关更多信息，请参阅包com.radar.vital.tcp.service.toRadar
+有关更多信息，请参阅包wi24rd.radar.vital.tcp.service.toRadar
 ```
 
 

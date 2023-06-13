@@ -30,7 +30,7 @@ To create a new radar server project and load the SDK of maven install.
 ​	![image-20220527170643920](../imgs/set.png)
 
 ```
-For more information, please refer to the package com.radar.vital.tcp.service.toRadar
+For more information, please refer to the package wi24rd.radar.vital.tcp.service.toRadar
 ```
 
 

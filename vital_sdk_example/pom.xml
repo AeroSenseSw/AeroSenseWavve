@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.radar</groupId>
+    <groupId>wi24rd.radar</groupId>
     <artifactId>vital_sdk_example</artifactId>
     <version>0.0.2-SNAPSHOT</version>
     <name>vital_sdk_example</name>
@@ -18,7 +18,7 @@
     <dependencies>
 
         <dependency>
-            <groupId>com.radar</groupId>
+            <groupId>wi24rd.radar</groupId>
             <artifactId>vital</artifactId>
             <version>1.0.2</version>
         </dependency>
@@ -75,7 +75,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.3.7.RELEASE</version>
                 <configuration>
-                    <mainClass>com.radar.Application</mainClass>
+                    <mainClass>wi24rd.radar.Application</mainClass>
                 </configuration>
                 <executions>
                     <execution>
