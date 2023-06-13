@@ -8,11 +8,7 @@ import java.io.FileInputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
-/**
- * @author ：ywb
- * @date ：Created in 2022/1/12 13:48
- * @modified By：
- */
+
 @Component
 @Slf4j
 public class ReadFirmware {

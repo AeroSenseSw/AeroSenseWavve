@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.radar</groupId>
-    <artifactId>Wavve</artifactId>
+    <artifactId>vital</artifactId>
     <version>1.0.2</version>
     <properties>
         <java.version>1.8</java.version>

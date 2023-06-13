@@ -32,5 +32,5 @@ build/
 .vscode/
 /logs/
 target/
-wavve_sdk_example/logs/
-wavve_sdk_example/target/
+vital_sdk_example/logs/
+vital_sdk_example/target/

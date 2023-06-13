@@ -4,7 +4,7 @@ package com.radar.vital.tcp.protocol;
 import com.alipay.remoting.ProtocolManager;
 
 /**
- * Created with IntelliJ IDEA.
+ *  
  *
  * @author： jia.w@aerosnese.com
  * @date： 2021/8/3 16:23

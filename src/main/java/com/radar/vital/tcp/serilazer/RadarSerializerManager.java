@@ -4,7 +4,7 @@ package com.radar.vital.tcp.serilazer;
 import com.alipay.remoting.serialization.SerializerManager;
 
 /**
- * Created with IntelliJ IDEA.
+ *  
  *
  * @author： jia.w@aerosnese.com
  * @date： 2021/8/4 11:30

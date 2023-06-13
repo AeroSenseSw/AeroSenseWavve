@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.Serializable;
 
 /**
- * Created with IntelliJ IDEA.
+ *  
  *
  * @author： jia.w@aerosnese.com
  * @date： 2021/6/16 9:33

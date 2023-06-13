@@ -3,10 +3,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.radar</groupId>
-    <artifactId>wavve_sdk_example</artifactId>
+    <artifactId>vital_sdk_example</artifactId>
     <version>0.0.2-SNAPSHOT</version>
-    <name>wavve_sdk_example</name>
-    <description>wavve_sdk_example</description>
+    <name>vital_sdk_example</name>
+    <description>vital_sdk_example</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -19,7 +19,7 @@
 
         <dependency>
             <groupId>com.radar</groupId>
-            <artifactId>Wavve</artifactId>
+            <artifactId>vital</artifactId>
             <version>1.0.2</version>
         </dependency>
 

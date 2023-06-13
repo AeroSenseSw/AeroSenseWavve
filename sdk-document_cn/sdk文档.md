@@ -31,7 +31,7 @@
 ​	![image-20220527170643920](../imgs/set.png)
 
 ```
-有关更多信息，请参阅包com.aerosnese.radar.tcp.service.toRadar
+有关更多信息，请参阅包com.radar.vital.tcp.service.toRadar
 ```
 
 
@@ -40,4 +40,4 @@
 
 ![image-20220527170643920](../imgs/report_3.png)
 
-请看wavve_sdk_example
+请看vital_sdk_example

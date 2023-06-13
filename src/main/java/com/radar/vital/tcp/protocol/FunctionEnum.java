@@ -4,7 +4,7 @@ package com.radar.vital.tcp.protocol;
 import java.util.Arrays;
 
 /**
- * Created with IntelliJ IDEA.
+ *  
  *
  * @author： jia.w@aerosnese.com
  * @date： 2021/8/4 14:59

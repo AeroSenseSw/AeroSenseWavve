@@ -3,7 +3,7 @@ package com.radar.vital.tcp.connection;
 import com.alipay.remoting.Connection;
 
 /**
- * Created with IntelliJ IDEA.
+ *  
  *
  * @author： jia.w@aerosnese.com
  * @date： 2021/8/12 10:53

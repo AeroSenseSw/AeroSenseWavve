@@ -30,7 +30,7 @@ To create a new radar server project and load the SDK of maven install.
 ​	![image-20220527170643920](../imgs/set.png)
 
 ```
-For more information, please refer to the package com.aerosnese.radar.tcp.service.toRadar
+For more information, please refer to the package com.radar.vital.tcp.service.toRadar
 ```
 
 
@@ -39,4 +39,4 @@ For more information, please refer to the package com.aerosnese.radar.tcp.servic
 
 ![image-20220527170643920](../imgs/report_3.png)
 
-Look at wavve_ sdk_ example
+Look at vital_ sdk_ example
