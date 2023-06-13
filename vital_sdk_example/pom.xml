@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>wi24rd.radar</groupId>
     <artifactId>vital_sdk_example</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
     <name>vital_sdk_example</name>
     <description>vital_sdk_example</description>
 
@@ -20,7 +20,7 @@
         <dependency>
             <groupId>wi24rd.radar</groupId>
             <artifactId>vital</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
         </dependency>
 
         <dependency>

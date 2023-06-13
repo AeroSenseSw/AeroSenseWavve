@@ -10,7 +10,7 @@
     </parent>
     <groupId>wi24rd.radar</groupId>
     <artifactId>vital</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <properties>
         <java.version>1.8</java.version>
     </properties>
@@ -24,13 +24,13 @@
         <dependency>
             <groupId>com.alipay.sofa</groupId>
             <artifactId>bolt</artifactId>
-            <version>1.6.2</version>
+            <version>1.6.3</version>
         </dependency>
 
         <dependency>
             <groupId>com.alipay.sofa</groupId>
             <artifactId>hessian</artifactId>
-            <version>3.3.6</version>
+            <version>3.3.13</version>
         </dependency>
 
         <dependency>
