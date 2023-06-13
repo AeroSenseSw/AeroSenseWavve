@@ -1,10 +1,10 @@
-package com.radar.controller;
+package wi24rd.radar.controller;
 
-import com.radar.vital.tcp.protocol.FunctionEnum;
-import com.radar.vital.tcp.protocol.RadarProtocolData;
-import com.radar.vital.tcp.service.toRadar.GetReportInterval;
-import com.radar.vital.tcp.service.toRadar.SetRadarParams;
-import com.radar.vital.tcp.util.ByteUtil;
+import wi24rd.radar.vital.tcp.protocol.FunctionEnum;
+import wi24rd.radar.vital.tcp.protocol.RadarProtocolData;
+import wi24rd.radar.vital.tcp.service.toRadar.GetReportInterval;
+import wi24rd.radar.vital.tcp.service.toRadar.SetRadarParams;
+import wi24rd.radar.vital.tcp.util.ByteUtil;
 import com.alipay.remoting.exception.RemotingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

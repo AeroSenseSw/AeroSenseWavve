@@ -5,8 +5,8 @@ import io.netty.buffer.PooledByteBufAllocator;
 import lombok.extern.slf4j.Slf4j;
 import wi24rd.radar.vital.tcp.domain.dto.CallBackDto;
 import wi24rd.radar.vital.tcp.domain.dto.ReportDto;
-import wi24rd.radar.vital.tcp.hander.callback.RadarHandlerCallBack;
-import wi24rd.radar.vital.tcp.hander.callback.RadarHandlerCallBackForConsumer;
+import wi24rd.radar.vital.tcp.handler.callback.RadarHandlerCallBack;
+import wi24rd.radar.vital.tcp.handler.callback.RadarHandlerCallBackForConsumer;
 import wi24rd.radar.vital.tcp.protocol.RadarProtocolData;
 
 import org.springframework.beans.factory.annotation.Autowired;

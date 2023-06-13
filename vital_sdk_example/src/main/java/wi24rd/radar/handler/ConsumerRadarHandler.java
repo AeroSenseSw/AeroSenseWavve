@@ -1,14 +1,12 @@
-package com.radar.handler;
+package wi24rd.radar.handler;
 
-import com.radar.vital.tcp.domain.dto.CallBackDto;
-import com.radar.vital.tcp.domain.dto.ReportDto;
-import com.radar.vital.tcp.hander.callback.RadarHandlerCallBackForConsumer;
-import com.radar.vital.tcp.protocol.FunctionEnum;
+import wi24rd.radar.vital.tcp.domain.dto.CallBackDto;
+import wi24rd.radar.vital.tcp.domain.dto.ReportDto;
+import wi24rd.radar.vital.tcp.handler.callback.RadarHandlerCallBackForConsumer;
+import wi24rd.radar.vital.tcp.protocol.FunctionEnum;
 import org.springframework.stereotype.Service;
 
 /**
- * @author ：radar
- * @date ：Created in 2022/11/29 15:58
  * Customize the processor to process radar data
  */
 @Service
@@ -29,7 +27,7 @@ public class ConsumerRadarHandler implements RadarHandlerCallBackForConsumer {
             if (callBackDto.getFunctionEnum() == FunctionEnum.breathHeightBpmAlert) {
                 // breathHeightBpmAlert
             }
-            // more protocol see com.radar.vital.tcp.protocol.FunctionEnum
+            // more protocol see wi24rd.radar.vital.tcp.protocol.FunctionEnum
             // do something
         }
     }

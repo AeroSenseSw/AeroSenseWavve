@@ -1,4 +1,4 @@
-package wi24rd.radar.vital.tcp.hander.base;
+package wi24rd.radar.vital.tcp.handler.base;
 
 import com.alipay.remoting.exception.RemotingException;
 

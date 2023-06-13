@@ -2,7 +2,7 @@ package wi24rd.radar.vital.tcp.service.toRadar;
 
 import lombok.extern.slf4j.Slf4j;
 import wi24rd.radar.vital.tcp.config.RequestTimeOut;
-import wi24rd.radar.vital.tcp.hander.base.AbstractToRadarProtocolDataHandler;
+import wi24rd.radar.vital.tcp.handler.base.AbstractToRadarProtocolDataHandler;
 import wi24rd.radar.vital.tcp.protocol.FunctionEnum;
 import wi24rd.radar.vital.tcp.protocol.RadarProtocolData;
 import wi24rd.radar.vital.tcp.server.RadarTcpServer;

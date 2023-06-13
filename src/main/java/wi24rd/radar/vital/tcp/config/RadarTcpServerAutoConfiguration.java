@@ -4,7 +4,7 @@ package wi24rd.radar.vital.tcp.config;
 import lombok.extern.slf4j.Slf4j;
 import wi24rd.radar.vital.tcp.connection.RadarAddressHashMap;
 import wi24rd.radar.vital.tcp.connection.RadarAddressMap;
-import wi24rd.radar.vital.tcp.hander.callback.RadarHandlerCallBack;
+import wi24rd.radar.vital.tcp.handler.callback.RadarHandlerCallBack;
 import wi24rd.radar.vital.tcp.server.RadarTcpServer;
 import wi24rd.radar.vital.tcp.service.fromRadar.*;
 import wi24rd.radar.vital.tcp.util.InetUtils;

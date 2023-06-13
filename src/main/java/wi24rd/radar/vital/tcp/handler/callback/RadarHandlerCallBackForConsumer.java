@@ -1,4 +1,4 @@
-package wi24rd.radar.vital.tcp.hander.callback;
+package wi24rd.radar.vital.tcp.handler.callback;
 
 import wi24rd.radar.vital.tcp.domain.dto.CallBackDto;
 
