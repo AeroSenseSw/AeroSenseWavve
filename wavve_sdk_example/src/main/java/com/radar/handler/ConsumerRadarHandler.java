@@ -1,9 +1,9 @@
 package com.radar.handler;
 
-import com.radar.radar.tcp.domain.dto.CallBackDto;
-import com.radar.radar.tcp.domain.dto.ReportDto;
-import com.radar.radar.tcp.hander.callback.RadarHandlerCallBackForConsumer;
-import com.radar.radar.tcp.protocol.FunctionEnum;
+import com.radar.vital.tcp.domain.dto.CallBackDto;
+import com.radar.vital.tcp.domain.dto.ReportDto;
+import com.radar.vital.tcp.hander.callback.RadarHandlerCallBackForConsumer;
+import com.radar.vital.tcp.protocol.FunctionEnum;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,7 +29,7 @@ public class ConsumerRadarHandler implements RadarHandlerCallBackForConsumer {
             if (callBackDto.getFunctionEnum() == FunctionEnum.breathHeightBpmAlert) {
                 // breathHeightBpmAlert
             }
-            // more protocol see com.radar.radar.tcp.protocol.FunctionEnum
+            // more protocol see com.radar.vital.tcp.protocol.FunctionEnum
             // do something
         }
     }
