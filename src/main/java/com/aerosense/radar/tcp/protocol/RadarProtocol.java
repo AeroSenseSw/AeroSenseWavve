@@ -18,7 +18,7 @@ import java.nio.charset.StandardCharsets;
  * @version: 1.0
 /**
  * Request command protocol for v1
- * 请求协议格式：fixLength(12个控制字节）+dynamicLen(报文内容，由contentLen决定其长度)
+ * request command protocol：fixLength(12 content byte）+dynamicLen(message content，length determine by contentLen)
  * 0     1     2           4           6           8          10           12          14         16
  * +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
  * |proto|ver  |type |cmd  |       requestId       | timeout   |contentLen | content  bytes ... ...
@@ -26,7 +26,7 @@ import java.nio.charset.StandardCharsets;
  *
  * proto: protocol code for protocol magic number:0x12
  * ver: protocol version:1
- * type: package type.   request:1   response:0   request oneway:2(一次性请求，服务器不会返回状态）
+ * type: package type.   request:1   response:0   request oneway:2(one-time request，the server will not return status）
  * cmd: cmd code for remoting command. heartbeat:0  request:1   response:2
  * requestId: id of request,auto increment from 1
  * timout: client wait the response max milliseconds (0-32768)
@@ -39,7 +39,7 @@ import java.nio.charset.StandardCharsets;
  * +-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+
  *
  * Response command protocol for v1
- * 响应协议格式：fixLength(12个控制字节） + dynamicLen(报文内容，由contentLen决定其长度)
+ * response command protocol：fixLength(12 content byte） + dynamicLen(message content，length determine by contentLen)
  * 0     1     2     3     4           6           8          10           12          14         16
  * +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
  * |proto|ver  | type|cmd  |   requestId           |respstatus |contentLen | content  bytes ... ...
@@ -61,14 +61,14 @@ import java.nio.charset.StandardCharsets;
  *
  */
 public class RadarProtocol implements Protocol {
-    /**协议数据类字节数组*/
+    /**protocol data class byte array*/
     public static final byte[] DATA_CLASS_BYTES    = RadarProtocolData.class.getName().getBytes(StandardCharsets.UTF_8);
 
-    /**协议码自定义魔数，作为判断是否是雷达的数据请求*/
+    /**protocol custom code magic number，data request to determine whether it is a radar*/
     public static final byte   PROTOCOL_CODE       = (byte) 0x13;
-    /** 雷达传输数据协议第一版 */
+    /** radar transmission data protocol version 1 */
     public static final byte   PROTOCOL_VERSION_1  = (byte) 0x01;
-    /** 协议头长度*/
+    /**protocol header length*/
     public static final int    PROTOCOL_HEADER_LEN = 14;
 
     private CommandEncoder     encoder;
