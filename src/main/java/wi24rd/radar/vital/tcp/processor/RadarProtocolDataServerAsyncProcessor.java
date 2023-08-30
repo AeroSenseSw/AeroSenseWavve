@@ -50,7 +50,7 @@ public class RadarProtocolDataServerAsyncProcessor extends AsyncUserProcessor<Ra
         boolean registerResult = registerOrBindRadar(bizContext, radarProtocolData);
 
         if (!registerResult) {
-            radarTcpServer.softRebootRadar(bizContext.getConnection());
+            radarTcpServer.ResetRadarRadar(bizContext.getConnection());
             return;
         }
 

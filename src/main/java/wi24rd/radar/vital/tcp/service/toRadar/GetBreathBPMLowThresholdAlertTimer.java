@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
  * @modified By：
  */
 @Service
-public class GetBreathingBpmLowThresholdAlarmTime extends AbstractToRadarProtocolDataHandler {
+public class GetBreathBPMLowThresholdAlertTimer extends AbstractToRadarProtocolDataHandler {
 
     public Integer process(String radarId) throws Exception {
-        ByteBuf byteBuf = super.processDo(radarId, FunctionEnum.getBreathingBpmLowThresholdAlarmTime);
+        ByteBuf byteBuf = super.processDo(radarId, FunctionEnum.getBreathBPMLowThresholdAlertTimer);
         int readInt = byteBuf.readInt();
         byteBuf.release();
         return readInt;

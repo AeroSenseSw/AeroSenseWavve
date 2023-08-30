@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
  * @modified By：
  */
 @Service
-public class GetHeartRateHeightThreshold extends AbstractToRadarProtocolDataHandler {
+public class GetLowHeartBPMAlertThreshold extends AbstractToRadarProtocolDataHandler {
 
     public Integer process(String radarId) throws Exception {
-        ByteBuf byteBuf = super.processDo(radarId, FunctionEnum.getHeartRateHeightThreshold);
+        ByteBuf byteBuf = super.processDo(radarId, FunctionEnum.getLowHeartBPMAlertThreshold);
         int readInt = byteBuf.readInt();
         byteBuf.release();
         return readInt;

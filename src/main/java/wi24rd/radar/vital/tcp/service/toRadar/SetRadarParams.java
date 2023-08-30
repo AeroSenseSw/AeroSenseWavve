@@ -70,7 +70,7 @@ public class SetRadarParams extends AbstractToRadarProtocolDataHandler {
         if (getRadarParamVo.getCode() == 1001) {
             data = (int) getRadarParamVo.getData() / 50;
         }
-        if (getRadarParamVo.getCode().shortValue() == FunctionEnum.setLiveBedNoBackReportTime.getFunction()) {
+        if (getRadarParamVo.getCode().shortValue() == FunctionEnum.setBedExitAlertTimer.getFunction()) {
             data = (int) getRadarParamVo.getData() * 60;
         }
 
@@ -80,7 +80,7 @@ public class SetRadarParams extends AbstractToRadarProtocolDataHandler {
         radarProtocolData.setFunction(FunctionEnum.from(getRadarParamVo.getCode().shortValue()));
         try {
 
-            if (radarProtocolData.getFunction() == FunctionEnum.setTargetDistance) {
+            if (radarProtocolData.getFunction() == FunctionEnum.setWorkingDistance) {
                 if (data instanceof Double) {
                     Double newData = (Double) data;
                     dataBuf.writeFloat(newData.floatValue() / 100);

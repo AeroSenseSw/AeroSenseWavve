@@ -8,17 +8,17 @@ import org.springframework.stereotype.Service;
 
 /**
  * @author ：ywb
- * @date ：Created in 2022/2/17 17:09
+ * @date ：Created in 2022/2/22 14:49
  * @modified By：
  */
 @Service
-public class GettingTheCardiacArrestAlarmTimeHandler extends AbstractToRadarProtocolDataHandler {
+public class GetBodyMovementCounterStatus  extends AbstractToRadarProtocolDataHandler {
 
     public Integer process(String radarId) throws Exception {
-        ByteBuf byteBuf = super.processDo(radarId, FunctionEnum.gettingTheCardiacArrestAlarmTime);
-        int readInt = byteBuf.readInt();
+        ByteBuf byteBuf = super.processDo(radarId, FunctionEnum.GetBodyMovementCounterStatus);
+        int readIntLE = byteBuf.readInt();
         byteBuf.release();
-        return readInt;
+        return readIntLE;
     }
 
 }

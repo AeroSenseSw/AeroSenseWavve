@@ -137,13 +137,13 @@ public class RadarTcpServer extends RpcServer {
         List<RadarProtocolDataHandler> handlers = new ArrayList<>();
         handlers.add(new BreathHeightBpmHandler(callBack));
         handlers.add(new BreathLowBpmHandler(callBack));
-        handlers.add(new CardiacArrestHandler(callBack));
+        handlers.add(new NoHeartAlertHandler(callBack));
         handlers.add(new HeartRateHeightBpmHandler(callBack));
         handlers.add(new HeartRateLowBpmHandler(callBack));
         handlers.add(new LiveBedNoBackHandler(callBack));
         handlers.add(new LongTimeNoTurnOverHandler(callBack));
         handlers.add(new RadarReportHandler(callBack));
-        handlers.add(new RespiratoryArrestHandler(callBack));
+        handlers.add(new NoBreathAlertHandler(callBack));
         handlers.add(new CreateConnectionHandler(callBack));
         handlers.add(new RollOverOrSitAndCallThePoliceHandler(callBack));
         handlers.add(new PhysicalActivityReportStatisticsHandler(callBack));
@@ -187,9 +187,9 @@ public class RadarTcpServer extends RpcServer {
 
     /**
      */
-    public void softRebootRadar(Connection connection) {
+    public void ResetRadarRadar(Connection connection) {
         log.debug("soft reboot the radar {}", connection.getRemoteAddress());
-        RadarProtocolData rebootData = RadarProtocolData.newFunctionInstance(FunctionEnum.softReboot,
+        RadarProtocolData rebootData = RadarProtocolData.newFunctionInstance(FunctionEnum.ResetRadar,
                 ByteUtil.intToByteBig(0));
         try {
             invokeAsyncWithConnection(connection, rebootData);

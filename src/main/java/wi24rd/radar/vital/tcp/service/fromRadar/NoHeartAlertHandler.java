@@ -18,20 +18,20 @@ import java.util.Set;
  * <p>
  */
 @Service
-public class RespiratoryArrestHandler extends AbstractFromRadarProtocolDataHandler {
-    public RespiratoryArrestHandler(RadarHandlerCallBack handlerCallBack) {
+public class NoHeartAlertHandler extends AbstractFromRadarProtocolDataHandler {
+    public NoHeartAlertHandler(RadarHandlerCallBack handlerCallBack) {
         super(handlerCallBack);
     }
 
     @Override
     public Object process(RadarProtocolData protocolData) {
-        protocolData.setFunction(FunctionEnum.respiratoryArrest);
+        protocolData.setFunction(FunctionEnum.NoHeartAlert);
         handlerCallBack.callBack(protocolData);
         return null;
     }
 
     @Override
     public Set<FunctionEnum> interests() {
-        return Sets.newHashSet(FunctionEnum.respiratoryArrest);
+        return Sets.newHashSet(FunctionEnum.NoHeartAlert);
     }
 }

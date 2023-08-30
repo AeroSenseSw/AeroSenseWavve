@@ -3,14 +3,7 @@ package wi24rd.radar.vital.tcp.protocol;
 
 import java.util.Arrays;
 
-/**
- *  
- *
- * @author： jia.w@aerosnese.com
- * @date： 2021/8/4 14:59
- * @version: 1.0
- * @update: ywb 2022/1/5 17:56
- */
+
 
 public enum FunctionEnum {
     UNDEFINED(-1),
@@ -21,24 +14,11 @@ public enum FunctionEnum {
     /**
      */
     radarReport(0x03e8),
+   
+
     /**
      */
-    liveBedNoBack(0x0406),
-    /**
-     */
-    longTimeNoTurnOver(0x0409),
-    /**
-     */
-    respiratoryArrest(0x03f0),
-    /**
-     */
-    breathLowBpmAlert(0x03f3),
-    /**
-     */
-    breathHeightBpmAlert(0x03f6),
-    /**
-     */
-    cardiacArrest(0x03fb),
+    NoHeartAlert(0x03fb),
     /**
      */
     heartRateLowBpm(0x03fe),
@@ -56,92 +36,95 @@ public enum FunctionEnum {
     getReportInterval(0x03ea),
     /**
      */
-    setTargetDistance(0x03eb),
+    setWorkingDistance(0x03eb),
     /**
      */
-    getTargetDistance(0x03ec),
+    getWorkingDistance(0x03ec),
     /**
      */
     calibration(0x03ed),
     /**
      */
-    setRespiratoryArrestReportTime(0x03ee),
+    setNoBreathAlertTimer(0x03ee),
     /**
      */
-    getRespiratoryArrestReportTime(0x03ef),
-    /**
-     */
+    getNoBreathAlertTimer(0x03ef),
+
+    
+    NoBreathAlert(0x03f0),
+   
+
     setBreathBpmLowThreshold(0x03f1),
     /**
      */
     getBreathBpmLowThreshold(0x03f2),
     /**
      */
-    setBreathBpmHeightThreshold(0x03f4),
+    LowBreathBPMAlert(0x03f3),
+
+    setBreathBpmHighThreshold(0x03f4),
     /**
      */
-    getBreathBpmHeightThreshold(0x03f5),
+    getBreathBpmHighThreshold(0x03f5),
+
+    HighBreathBPMAlert(0x03f6),
     /**
      */
-    setBreathingBpmLowThresholdAlarmTime(0x03f7),
+    setBreathBPMLowThresholdAlertTimer(0x03f7),
+    
+    getBreathBPMLowThresholdAlertTimer(0x03f8),
+    
+    setNoHeartAlertTimer(0x03f9),
     /**
      */
-    getBreathingBpmLowThresholdAlarmTime(0x03f8),
+    getNoHeartAlertTimer(0x03fa),
     /**
      */
-    settingTheCardiacArrestAlarmTime(0x0402),
+    setLowHeartBPMAlertThreshold(0x03fc),
     /**
      */
-    gettingTheCardiacArrestAlarmTime(0x0403),
+    getLowHeartBPMAlertThreshold(0x03fd),
     /**
      */
-    setCardiacArrestReportTime(0x03f9),
-    /**
-     */
-    getCardiacArrestReportTime(0x03fa),
-    /**
-     */
-    setHeartRateLowThreshold(0x03fc),
-    /**
-     */
-    getHeartRateLowThreshold(0x03fd),
-    /**
-     */
-    setHeartRateHeightThreshold(0x03ff),
+    setHighHeartBPMAlertThreshold(0x03ff),
     /**
      * 、
      */
-    getHeartRateHeightThreshold(0x0400),
+    getHighHeartBPMAlertThreshold(0x0400),
+
+    setHighLowHeartBPMAlertTimer(0x0402),
     /**
      */
-    setLiveBedNoBackReportTime(0x0404),
+    getHighLowHeartBPMAlertTimer(0x0403),
+
+    setBedExitAlertTimer(0x0404),
+    
+
+    getBedExitAlertTimer(0x0405),
+  
+    
+    liveBedNoBack(0x0406),
     /**
      */
-    getLiveBedNoBackReportTime(0x0405),
+    setLongTimeNoTurnOverAlert(0x0407),
     /**
      */
-    setLongTimeNoTurnOverReportTime(0x0407),
-    /**
-     */
-    getLongTimeNoTurnOverReportTime(0x0408),
-    /**
-     */
+    getLongTimeNoTurnOverAlert(0x0408),
+
+    longTimeNoTurnOver(0x0409),
     turnOnTurnOver(0x040a),
-    /**
-     */
+  
     getTurnOverTurnOnState(0x040b),
 
-    /**
-     */
+   
     rollOverOrSitAndCallThePolice(0x040c),
 
-    /**
-     */
-    bodyMovementCollection(0x040d),
+    
+    TurnBodyMovementCounter(0x040d),
 
     /**
      */
-    getTheStatusOfTheNumberOfMotionsCollected(0x040e),
+    GetBodyMovementCounterStatus(0x040e),
 
     /**
      */
@@ -152,7 +135,7 @@ public enum FunctionEnum {
 
     /**
      */
-    softReboot(0x0411),
+    ResetRadar(0x0411),
 
     zigbeeRelay(0x0413),
 
@@ -170,7 +153,6 @@ public enum FunctionEnum {
                 .findFirst()
                 .orElse(UNDEFINED);
     }
-
 
     public short getFunction() {
         return function;

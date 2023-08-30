@@ -73,13 +73,13 @@ public class RadarTcpServerAutoConfiguration implements ApplicationListener<Cont
                 RadarHandlerCallBack radarHandlerCallBack = contextRefreshedEvent.getApplicationContext().getBean(RadarHandlerCallBack.class);
                 radarTcpServer.registerHandler(new BreathHeightBpmHandler(radarHandlerCallBack));
                 radarTcpServer.registerHandler(new BreathLowBpmHandler(radarHandlerCallBack));
-                radarTcpServer.registerHandler(new CardiacArrestHandler(radarHandlerCallBack));
+                radarTcpServer.registerHandler(new NoHeartAlertHandler(radarHandlerCallBack));
                 radarTcpServer.registerHandler(new HeartRateHeightBpmHandler(radarHandlerCallBack));
                 radarTcpServer.registerHandler(new HeartRateLowBpmHandler(radarHandlerCallBack));
                 radarTcpServer.registerHandler(new LiveBedNoBackHandler(radarHandlerCallBack));
                 radarTcpServer.registerHandler(new LongTimeNoTurnOverHandler(radarHandlerCallBack));
                 radarTcpServer.registerHandler(new RadarReportHandler(radarHandlerCallBack));
-                radarTcpServer.registerHandler(new RespiratoryArrestHandler(radarHandlerCallBack));
+                radarTcpServer.registerHandler(new NoBreathAlertHandler(radarHandlerCallBack));
                 radarTcpServer.registerHandler(new CreateConnectionHandler(radarHandlerCallBack));
                 radarTcpServer.registerHandler(new RollOverOrSitAndCallThePoliceHandler(radarHandlerCallBack));
                 radarTcpServer.registerHandler(new PhysicalActivityReportStatisticsHandler(radarHandlerCallBack));

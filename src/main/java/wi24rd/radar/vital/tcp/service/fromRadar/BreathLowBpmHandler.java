@@ -25,13 +25,13 @@ public class BreathLowBpmHandler extends AbstractFromRadarProtocolDataHandler {
 
     @Override
     public Object process(RadarProtocolData protocolData) {
-        protocolData.setFunction(FunctionEnum.breathLowBpmAlert);
+        protocolData.setFunction(FunctionEnum.LowBreathBPMAlert);
         handlerCallBack.callBack(protocolData);
         return null;
     }
 
     @Override
     public Set<FunctionEnum> interests() {
-        return Sets.newHashSet(FunctionEnum.breathLowBpmAlert);
+        return Sets.newHashSet(FunctionEnum.LowBreathBPMAlert);
     }
 }

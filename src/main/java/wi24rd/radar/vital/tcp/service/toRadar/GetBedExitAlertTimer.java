@@ -8,17 +8,17 @@ import org.springframework.stereotype.Service;
 
 /**
  * @author ：ywb
- * @date ：Created in 2022/2/17 17:07
+ * @date ：Created in 2022/1/8 17:55
  * @modified By：
  */
 @Service
-public class GetBreathingBpmLowThresholdAlarmTimeHandler extends AbstractToRadarProtocolDataHandler {
+public class GetBedExitAlertTimer extends AbstractToRadarProtocolDataHandler {
 
     public Integer process(String radarId) throws Exception {
-        ByteBuf byteBuf = super.processDo(radarId, FunctionEnum.getBreathingBpmLowThresholdAlarmTime);
+        ByteBuf byteBuf = super.processDo(radarId, FunctionEnum.getBedExitAlertTimer);
         int readInt = byteBuf.readInt();
         byteBuf.release();
-        return readInt;
+        return readInt / 60;
     }
 
 }

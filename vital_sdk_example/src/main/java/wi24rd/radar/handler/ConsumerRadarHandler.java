@@ -24,8 +24,8 @@ public class ConsumerRadarHandler implements RadarHandlerCallBackForConsumer {
             //do something
         } else {
             //radar alert
-            if (callBackDto.getFunctionEnum() == FunctionEnum.breathHeightBpmAlert) {
-                // breathHeightBpmAlert
+            if (callBackDto.getFunctionEnum() == FunctionEnum.HighBreathBPMAlert) {
+                // HighBreathBPMAlert
             }
             // more protocol see wi24rd.radar.vital.tcp.protocol.FunctionEnum
             // do something

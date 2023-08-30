@@ -8,16 +8,17 @@ import org.springframework.stereotype.Service;
 
 /**
  * @author ：ywb
- * @date ：Created in 2022/3/16 9:36
+ * @date ：Created in 2022/1/8 17:55
  * @modified By：
  */
 @Service
-public class GettingTheCardiacArrestAlarmTime  extends AbstractToRadarProtocolDataHandler {
+public class GetLongTimeNoTurnOverAlert extends AbstractToRadarProtocolDataHandler {
 
     public Integer process(String radarId) throws Exception {
-        ByteBuf byteBuf = super.processDo(radarId, FunctionEnum.getCardiacArrestReportTime);
+        ByteBuf byteBuf = super.processDo(radarId, FunctionEnum.getLongTimeNoTurnOverAlert);
         int readInt = byteBuf.readInt();
         byteBuf.release();
         return readInt;
     }
+
 }

@@ -6,19 +6,20 @@ import wi24rd.radar.vital.tcp.protocol.FunctionEnum;
 
 import org.springframework.stereotype.Service;
 
+
 /**
  * @author ：ywb
- * @date ：Created in 2022/1/8 17:55
+ * @date ：Created in 2022/1/8 17:17
  * @modified By：
  */
 @Service
-public class GetHeartRateLowThreshold extends AbstractToRadarProtocolDataHandler {
+public class GetWorkingDistance extends AbstractToRadarProtocolDataHandler {
 
-    public Integer process(String radarId) throws Exception {
-        ByteBuf byteBuf = super.processDo(radarId, FunctionEnum.getHeartRateLowThreshold);
-        int readInt = byteBuf.readInt();
+    public Float process(String radarId) throws Exception {
+        ByteBuf byteBuf = super.processDo(radarId, FunctionEnum.getWorkingDistance);
+        float readFloat = byteBuf.readFloat() * 100;
         byteBuf.release();
-        return readInt;
+        return readFloat;
     }
 
 }
