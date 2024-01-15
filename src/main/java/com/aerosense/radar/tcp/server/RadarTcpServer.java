@@ -5,6 +5,7 @@ import com.aerosense.radar.tcp.config.RadarTcpServerProperties;
 import com.aerosense.radar.tcp.connection.DisconnectServerEventProcessor;
 import com.aerosense.radar.tcp.connection.RadarAddressHashMap;
 import com.aerosense.radar.tcp.connection.RadarAddressMap;
+import com.aerosense.radar.tcp.exception.RadarNotConnectException;
 import com.aerosense.radar.tcp.hander.base.RadarProtocolDataHandler;
 import com.aerosense.radar.tcp.hander.base.RadarProtocolDataHandlerManager;
 import com.aerosense.radar.tcp.hander.callback.RadarHandlerCallBack;
@@ -28,13 +29,10 @@ import com.aerosense.radar.tcp.serilazer.RadarSerializerManager;
 import com.aerosense.radar.tcp.util.ByteUtil;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
- * Created with IntelliJ IDEA.
+ * 
  *
  * @author： jia.w@aerosnese.com
  * @date： 2021/8/3 16:23
@@ -146,6 +144,7 @@ public class RadarTcpServer extends RpcServer {
         handlers.add(new CreateConnectionHandler(callBack));
         handlers.add(new RollOverOrSitAndCallThePoliceHandler(callBack));
         handlers.add(new PhysicalActivityReportStatisticsHandler(callBack));
+        handlers.add(new FallDetectHandler(callBack));
         return radarServerStarter(handlers);
     }
 
@@ -175,13 +174,27 @@ public class RadarTcpServer extends RpcServer {
      */
     public Object invokeSync(RadarProtocolData requestObj, InvokeContext invokeContext, int timeoutMillis)
             throws RemotingException, InterruptedException {
-        String radarAddress = getRadarAddress(requestObj.getRadarId());
-        if (Strings.isNullOrEmpty(radarAddress)) {
-            log.error("error");
-            return null;
-        }
+        Connection radarConnection = getRadarConnectionThrow(requestObj.getRadarId());
+        return invokeSync(radarConnection, requestObj, invokeContext, timeoutMillis);
+    }
+
+    public Object invokeSyncWithConnection(Connection connection, RadarProtocolData requestObj, int timeoutMillis)
+            throws RemotingException, InterruptedException {
+        InvokeContext invokeContext = new InvokeContext();
+        return invokeSyncWithConnection(connection, requestObj, invokeContext, timeoutMillis);
+    }
+
+    public Object invokeSyncWithAddress(String address, RadarProtocolData requestObj, int timeoutMillis)
+            throws RemotingException, InterruptedException {
+        InvokeContext invokeContext = new InvokeContext();
+        Connection connection = getConnection(address);
+        return invokeSyncWithConnection(connection, requestObj, invokeContext, timeoutMillis);
+    }
+
+    public Object invokeSyncWithConnection(Connection connection, RadarProtocolData requestObj, InvokeContext invokeContext, int timeoutMillis)
+            throws RemotingException, InterruptedException {
         invokeContext.put(InvokeContext.BOLT_CUSTOM_SERIALIZER, RadarSerializer.IDX_BYTE);
-        return super.invokeSync(radarAddress, requestObj, invokeContext, timeoutMillis);
+        return super.invokeSync(connection, requestObj, invokeContext, timeoutMillis);
     }
 
     /**
@@ -205,5 +218,29 @@ public class RadarTcpServer extends RpcServer {
         InvokeContext invokeContext = new InvokeContext();
         invokeContext.put(InvokeContext.BOLT_CUSTOM_SERIALIZER, RadarSerializer.IDX_BYTE);
         return invokeWithFuture(connection, requestObj, invokeContext, 3000 * 10);
+    }
+
+    public Connection getConnection(String address) {
+        return getConnectionManager().get(address);
+    }
+
+    public Connection getRadarConnection(String radarId) {
+        String radarAddress = getRadarAddress(radarId);
+        if (Objects.nonNull(radarAddress)) {
+            return getConnection(radarAddress);
+        }
+        return null;
+    }
+
+    public Connection getRadarConnectionThrow(String radarId) {
+        Connection radarConnection = getRadarConnection(radarId);
+        if (radarConnection == null) {
+            throw new RadarNotConnectException("radar not connect "+radarId);
+        }
+        return radarConnection;
+    }
+
+    public boolean isRadarInThisServer(String radarId) {
+        return getRadarConnection(radarId)!=null;
     }
 }

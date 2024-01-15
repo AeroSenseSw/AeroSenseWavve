@@ -1,16 +1,17 @@
-package com.aerosense.radar.tcp.service.toRadar;
+package com.aerosense.radar.tcp.hander;
 
+import com.aerosense.radar.tcp.connection.ConnectionUtil;
+import com.aerosense.radar.tcp.domain.dto.RadarUpgradeFirmwareDto;
+import com.aerosense.radar.tcp.exception.RadarNotConnectException;
 import com.aerosense.radar.tcp.protocol.FunctionEnum;
 import com.aerosense.radar.tcp.protocol.RadarProtocolData;
-import com.aerosense.radar.tcp.protocol.RadarUpgradeFirmwareDto;
+import com.aerosense.radar.tcp.protocol.RadarTypeEnum;
 import com.aerosense.radar.tcp.server.RadarTcpServer;
 import com.aerosense.radar.tcp.util.ByteUtil;
 import com.aerosense.radar.tcp.util.RadarCRC16;
-import com.alipay.remoting.BizContext;
 import com.alipay.remoting.exception.RemotingException;
-import com.alipay.remoting.rpc.protocol.SyncUserProcessor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
 import java.util.Arrays;
@@ -20,60 +21,85 @@ import java.util.stream.Collectors;
 
 /**
  * @author jia.wu
+ * @version 1.0.0
+ * @description: RadarFirmwareUpgradeHandler
+ * @date 2024/1/11 11:52
  */
 @Slf4j
-@Service
-public class RadarUpgradeFirmwareProcessor extends SyncUserProcessor<RadarUpgradeFirmwareDto> {
+@Component
+public class RadarFirmwareUpgradeHandler {
     public static final int DEFAULT_RETRY_COUNT = 5;
     private final RadarTcpServer radarTcpServer;
     private static final int BLOCK_SIZE = 256;
     private static final int TIMEOUT_MILLS = 60*1000;
-    public RadarUpgradeFirmwareProcessor(RadarTcpServer radarTcpServer) {
+
+    public RadarFirmwareUpgradeHandler(RadarTcpServer radarTcpServer) {
         this.radarTcpServer = radarTcpServer;
     }
 
-
-    @Override
-    public Object handleRequest(BizContext bizContext, RadarUpgradeFirmwareDto dto) throws Exception {
-        try {
-            if (ObjectUtils.isEmpty(dto.getRadarIds()) || ObjectUtils.isEmpty(dto.getFirmwareData())) {
-                throw new RemotingException("Parameter error, please check whether the upgraded radar and firmware data are set correctly");
-            }
-            byte[][] firmwareData = splitAndCrc16(dto.getFirmwareData(), BLOCK_SIZE);
-            int length = dto.getFirmwareData().length;
-            //返回升级成功的雷达id列表
-            List<String> radarIds = dto.getRadarIds().stream()
-                    .map(radarId -> doUpgrade(radarId, length, firmwareData))
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
-            dto.setFirmwareData(null);
-            dto.setRadarIds(radarIds);
-        }catch (Exception e){
-            log.error("radar upgrade firmware error", e);
+    public RadarUpgradeFirmwareDto doUpgradeFirmware(RadarUpgradeFirmwareDto dto) throws RemotingException {
+        if (ObjectUtils.isEmpty(dto.getRadarIds()) || ObjectUtils.isEmpty(dto.getFirmwareData())) {
+            throw new RemotingException("Parameter error, please check whether the upgraded radar and firmware data are set correctly");
         }
+        List<Byte> types = dto.getRadarIds().stream()
+                .map(radarTcpServer::getRadarConnection)
+                .filter(Objects::nonNull)
+                .map(ConnectionUtil::getRadarType)
+                .distinct().collect(Collectors.toList());
+        if (types.size() != 1) {
+            log.error("upgrade radar type must be equal 1 reality {}", types);
+            if (types.size()>1){
+                throw new RemotingException("radar list must is same type");
+            }else{
+                throw new RemotingException("radars not connect "+dto.getRadarIds());
+            }
+        }
+        RadarTypeEnum radarTypeEnum = RadarTypeEnum.fromType(types.get(0));
+        byte[][] firmwareData = splitAndCrc16(radarTypeEnum, dto.getFirmwareData(), BLOCK_SIZE);
+        int length = dto.getFirmwareData().length;
+        List<String> radarIds = dto.getRadarIds().stream()
+                .map(radarId -> doUpgrade(radarId, length, firmwareData))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        dto.setFirmwareData(null);
+        dto.setRadarIds(radarIds);
         return dto;
     }
 
     /**
+     *
+     *
+     * @param radarTypeEnum
+     * @param firmwareData
+     * @param size
+     * @return
      */
-    private byte[][] splitAndCrc16(byte[] firmwareData, int size) {
-        int blockSize = (firmwareData.length/size) + (firmwareData.length % size>0 ? 1 : 0);
+    private byte[][] splitAndCrc16(RadarTypeEnum radarTypeEnum, byte[] firmwareData, int size) {
+        int blockSize = (firmwareData.length / size) + (firmwareData.length % size > 0 ? 1 : 0);
         byte[][] splitData = new byte[blockSize][];
         for (int i = 0; i < blockSize; i++) {
-            int endIndex = (i + 1) * size;
-            if(endIndex > firmwareData.length){
+            int blockIndex = i+1;
+            int startIndex = i * size;
+            int endIndex = blockIndex * size;
+            if (endIndex > firmwareData.length) {
                 endIndex = firmwareData.length;
             }
-            byte[] blockData = Arrays.copyOfRange(firmwareData, i * size, endIndex);
+            byte[] blockData = Arrays.copyOfRange(firmwareData, startIndex, endIndex);
             int blockCrc16 = RadarCRC16.crc16BaseRadar(blockData);
             byte[] crc16Bytes = ByteUtil.shortToByteLittle((short) blockCrc16);
-            byte[] otherCrc16Bytes = RadarCRC16.getCRC(blockData);
-            log.debug("blockCrc16: {} - crc16Bytes: {} otherCrc16Bytes: {}",
-                    blockCrc16, Arrays.toString(crc16Bytes), Arrays.toString(otherCrc16Bytes));
-            int blockDataLength = blockData.length;
-            byte[] bytes = new byte[blockDataLength + 2];
-            System.arraycopy(blockData, 0, bytes, 0, blockDataLength);
-            System.arraycopy(crc16Bytes, 0, bytes, blockDataLength, 2);
+            boolean attachBlockIndex = radarTypeEnum == RadarTypeEnum.WAVVE_PRO;
+            int bytesLength = attachBlockIndex?blockData.length+4+2:blockData.length+2;
+            byte[] bytes = new byte[bytesLength];
+            int copyStartIndex = 0;
+            if(attachBlockIndex) {
+                //index start from 0
+                byte[] blockIndexBytes = ByteUtil.intToByteBig(blockIndex-1);
+                System.arraycopy(blockIndexBytes, 0, bytes, copyStartIndex, 4);
+                copyStartIndex+=4;
+            }
+            System.arraycopy(blockData, 0, bytes, copyStartIndex, blockData.length);
+            copyStartIndex+=blockData.length;
+            System.arraycopy(crc16Bytes, 0, bytes, copyStartIndex, 2);
             splitData[i] = bytes;
         }
         return splitData;
@@ -115,27 +141,25 @@ public class RadarUpgradeFirmwareProcessor extends SyncUserProcessor<RadarUpgrad
     /**
      */
     private boolean callRadar(String radarId, byte[] data, FunctionEnum functionEnum){
-        int retryCount = DEFAULT_RETRY_COUNT;
+        int retryCount = 1, maxRetryCount = DEFAULT_RETRY_COUNT;
         RadarProtocolData radarProtocolData = RadarProtocolData.newEmptyInstance()
                 .fillFunctionData(radarId, functionEnum, data);
-        while (retryCount-->0) {
+        while (retryCount<=maxRetryCount) {
             try {
                 Object obj = radarTcpServer.invokeSync(radarProtocolData, TIMEOUT_MILLS);
                 RadarProtocolData retObj = (RadarProtocolData) Objects.requireNonNull(obj);
                 return ByteUtil.bytes2IntBig(retObj.getData()) != 1;
             }catch (Exception e){
-                log.error("upgrade radar firmware error, retry count: {} - {}", retryCount, functionEnum, e);
-                if(retryCount==0){
+                if (e instanceof RadarNotConnectException){
                     return true;
                 }
+                log.error("upgrade radar firmware error, retry count: {} - {}", retryCount, functionEnum, e);
+                if(retryCount==maxRetryCount){
+                    return true;
+                }
+                retryCount++;
             }
         }
-        return false;
+        return true;
     }
-
-    @Override
-    public String interest() {
-        return RadarUpgradeFirmwareDto.class.getName();
-    }
-
 }

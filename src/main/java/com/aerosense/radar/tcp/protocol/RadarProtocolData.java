@@ -1,6 +1,7 @@
 
 package com.aerosense.radar.tcp.protocol;
 
+import com.aerosense.radar.tcp.util.ByteUtil;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
@@ -8,7 +9,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 /**
- * Created with IntelliJ IDEA.
+ * 
  *
  * @author： jia.w@aerosnese.com
  * @date： 2021/8/3 14:30
@@ -19,8 +20,6 @@ import java.util.Arrays;
 public class RadarProtocolData implements Serializable {
     /** For serialization  */
     private static final long serialVersionUID = 1;
-    /**协议数据固定长度：function：1， radarId：12，radarVersion：8*/
-    public static final int DATA_FIX_LEN = 15;
 
     /**函数接口*/
     private FunctionEnum    function;
@@ -63,14 +62,12 @@ public class RadarProtocolData implements Serializable {
         this.data = data;
     }
     /**
-     * 创建一下新的空实例
      * @return
      */
     public static final RadarProtocolData newEmptyInstance(){
         return new RadarProtocolData();
     }
     /**
-     * 填充function
      * @param id
      * @param function
      * @param data
@@ -84,7 +81,6 @@ public class RadarProtocolData implements Serializable {
     }
 
     /**
-     * 创建一下新的指定function实例
      * @return
      */
     public static final RadarProtocolData newFunctionInstance(FunctionEnum function, byte[] data){
@@ -92,6 +88,24 @@ public class RadarProtocolData implements Serializable {
         radarProtocolData.setFunction(function);
         radarProtocolData.setData(data);
         return radarProtocolData;
+    }
+
+    public static final RadarProtocolData newInstance(String id, FunctionEnum function, byte[] data){
+        RadarProtocolData radarProtocolData = RadarProtocolData.newEmptyInstance();
+        radarProtocolData.setRadarId(id);
+        radarProtocolData.setFunction(function);
+        radarProtocolData.setData(data);
+        return radarProtocolData;
+    }
+
+    public final RadarProtocolData success(){
+        this.setData(ByteUtil.intToByteBig(1));
+        return this;
+    }
+
+    public final RadarProtocolData failure(){
+        this.setData(ByteUtil.intToByteBig(0));
+        return this;
     }
 
     @Override
@@ -103,28 +117,5 @@ public class RadarProtocolData implements Serializable {
                 ", data=" + Arrays.toString(data) +
                 '}';
     }
-//
-//    /**
-//     * 转化为之前http协议传输的数据格式字节数组
-//     * @return
-//     */
-//    public byte[] toBytes(){
-//        StringBuilder fixStr = new StringBuilder();
-//        fixStr.append(function.toString()).append(",");
-//        fixStr.append(radarId);
-//        if(function!=FunctionEnum.HeatMap){
-//            fixStr.append(",").append(radarVersion);
-//        }
-//        int heatMapLen =  getData()!=null ? getData().length : 0;
-//        if(heatMapLen>0){
-//            fixStr.append(",");
-//        }
-//        byte[] fixBytes = fixStr.toString().getBytes(StandardCharsets.UTF_8);
-//        byte[] data = new byte[fixBytes.length + heatMapLen];
-//        System.arraycopy(fixBytes, 0, data, 0, fixBytes.length);
-//        if(heatMapLen>0){
-//            System.arraycopy(getData(),0, data, fixBytes.length, heatMapLen);
-//        }
-//        return data;
-//    }
+
 }

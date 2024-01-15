@@ -1,12 +1,12 @@
 
 package com.aerosense.radar.tcp.serilazer;
 
+import com.aerosense.radar.tcp.protocol.RadarProtocol;
 import com.alipay.remoting.CommandEncoder;
 import com.alipay.remoting.Connection;
 import com.alipay.remoting.rpc.RequestCommand;
 import com.alipay.remoting.rpc.ResponseCommand;
 import com.alipay.remoting.rpc.RpcCommand;
-import com.aerosense.radar.tcp.protocol.RadarProtocol;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.Attribute;
@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.Serializable;
 
 /**
- * Created with IntelliJ IDEA.
  *
  * @author： jia.w@aerosnese.com
  * @date： 2021/6/16 9:33
@@ -23,6 +22,11 @@ import java.io.Serializable;
  */
 @Slf4j
 public class RadarCommandEncoder implements CommandEncoder {
+    private RadarProtocol radarProtocol;
+
+    public RadarCommandEncoder(RadarProtocol radarProtocol) {
+        this.radarProtocol = radarProtocol;
+    }
 
     @Override
     public void encode(ChannelHandlerContext ctx, Serializable msg, ByteBuf out) throws Exception {
@@ -38,11 +42,10 @@ public class RadarCommandEncoder implements CommandEncoder {
              * cotentLen: length of content //do by server
              * content
              */
-            int index = out.writerIndex();
             RpcCommand cmd = (RpcCommand) msg;
-            out.writeByte(RadarProtocol.PROTOCOL_CODE);
+            out.writeByte(radarProtocol.getProtocolCodeByte());
             Attribute<Byte> version = ctx.channel().attr(Connection.VERSION);
-            byte ver = RadarProtocol.PROTOCOL_VERSION_1;
+            byte ver = radarProtocol.getProtocolVersion();
             if (version != null && version.get() != null) {
                 ver = version.get();
             }
@@ -60,17 +63,9 @@ public class RadarCommandEncoder implements CommandEncoder {
                 out.writeShort(response.getResponseStatus().getValue());
             }
             out.writeInt(cmd.getContentLength());
-//            if (cmd instanceof RpcRequestCommand) {
-//                RadarProtocolData requestObject = (RadarProtocolData) ((RpcRequestCommand) cmd).getRequestObject();
-//                out.writeShortLE(requestObject.getFunction().getFunction());
-//            }
             if (cmd.getContentLength() > 0) {
                 out.writeBytes(cmd.getContent());
             }
-            byte[] dat = new byte[out.readableBytes()];
-            out.readBytes(dat);
-//            System.out.println(ByteUtils.bytesToHexString(dat));
-            out.writeBytes(dat);
         } else {
             String warnMsg = "cancel encode msg type [" + msg.getClass() + "] is not subclass of RpcCommand";
             log.warn(warnMsg);

@@ -4,7 +4,7 @@ package com.aerosense.radar.tcp.util;
  * @author jia.wu
  */
 public class ByteUtil {
-
+    public static final byte[] BYTES_0 = ByteUtil.intToByteBig(0);
     /**
      */
     public static byte[] intToByteBig(int n) {
@@ -45,6 +45,22 @@ public class ByteUtil {
         int int2 = (bytes[2] & 0xff) << 8;
         int int3 = (bytes[1] & 0xff) << 16;
         int int4 = (bytes[0] & 0xff) << 24;
+
+        return int1 | int2 | int3 | int4;
+    }
+
+    /**
+     * byte数组到int的转换(大端)
+     *
+     * @param bytes
+     * @param position
+     * @return
+     */
+    public static int bytes2IntBig(byte[] bytes, int position) {
+        int int1 = bytes[position+3] & 0xff;
+        int int2 = (bytes[position+2] & 0xff) << 8;
+        int int3 = (bytes[position+1] & 0xff) << 16;
+        int int4 = (bytes[position] & 0xff) << 24;
 
         return int1 | int2 | int3 | int4;
     }

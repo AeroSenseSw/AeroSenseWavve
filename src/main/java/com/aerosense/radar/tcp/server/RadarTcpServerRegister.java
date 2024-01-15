@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.PostConstruct;
 
 /**
- * Created with IntelliJ IDEA.
+ * 
  *
  * @author： jia.w@aerosnese.com
  * @date： 2021/8/17 10:51

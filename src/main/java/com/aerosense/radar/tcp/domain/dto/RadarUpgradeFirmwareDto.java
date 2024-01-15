@@ -1,4 +1,4 @@
-package com.aerosense.radar.tcp.protocol;
+package com.aerosense.radar.tcp.domain.dto;
 
 import java.io.Serializable;
 import java.util.Arrays;

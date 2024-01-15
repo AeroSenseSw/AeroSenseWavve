@@ -17,12 +17,14 @@ import org.springframework.stereotype.Service;
 
 
 /**
+ * Deprecated !!! use ServerRequestRadarHandler method to set radar parameters
  * @author ：ywb
  * @date ：Created in 2022/1/7 11:30
  * @modified By：
  */
 @Service
 @Slf4j
+@Deprecated
 public class SetRadarParams extends AbstractToRadarProtocolDataHandler {
     @Autowired
     private RadarTcpServer radarTcpServer;

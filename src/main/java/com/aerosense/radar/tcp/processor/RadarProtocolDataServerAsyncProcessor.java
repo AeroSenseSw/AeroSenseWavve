@@ -6,6 +6,7 @@ import com.aerosense.radar.tcp.connection.RadarAddressMap;
 import com.aerosense.radar.tcp.hander.base.RadarProtocolDataHandler;
 import com.aerosense.radar.tcp.hander.base.RadarProtocolDataHandlerManager;
 import com.aerosense.radar.tcp.protocol.RadarProtocolData;
+import com.aerosense.radar.tcp.protocol.RadarProtocolUtil;
 import com.alipay.remoting.AsyncContext;
 import com.alipay.remoting.BizContext;
 import com.alipay.remoting.Connection;
@@ -22,7 +23,7 @@ import java.util.Arrays;
 import java.util.Locale;
 
 /**
- * Created with IntelliJ IDEA.
+ * 
  *
  * @author： jia.w@aerosnese.com
  * @date： 2021/8/6 10:41
@@ -85,14 +86,14 @@ public class RadarProtocolDataServerAsyncProcessor extends AsyncUserProcessor<Ra
                     log.warn("register radar failure, remote address parse to be null");
                     return false;
                 }
-
                 byte[] data = radarProtocolData.getData();
-                String version = getHardwareVersion(Arrays.copyOfRange(data, 1, 5));
+                byte type = data[0];
+                String version = RadarProtocolUtil.getHardwareVersion(Arrays.copyOfRange(data, 1, 5));
                 byte[] idBytes = Arrays.copyOfRange(data, 5, data.length);
                 String id = ByteBufUtil.hexDump(idBytes).toUpperCase(Locale.ROOT);
-
+                connection.setAttributeIfAbsent(ConnectionUtil.ATTR_TYPE, type);
                 connection.setAttributeIfAbsent(ConnectionUtil.ATTR_RADAR_Id, id);
-                connection.setAttributeIfAbsent(ConnectionUtil.ATTR_VERSION, version);
+                connection.setAttribute(ConnectionUtil.ATTR_VERSION, version);
                 radarAddressMap.bindAddress(remoteAddress, id);
                 log.info("register radar successful {} - {}", id, remoteAddress);
                 result = true;
@@ -119,23 +120,6 @@ public class RadarProtocolDataServerAsyncProcessor extends AsyncUserProcessor<Ra
     @Override
     public boolean timeoutDiscard() {
         return true;
-    }
-
-    /**
-     */
-    public static String getHardwareVersion(byte[] bytes) {
-        if (null == bytes) {
-            return "unknown";
-        }
-        StringBuilder version = new StringBuilder();
-        byte[] temp = new byte[4];
-        for (byte aByte : bytes) {
-            temp[3] = aByte;
-            String hexString = String.format("%02d", ByteUtil.byte4ToInt(temp));
-            version.append(hexString).append(".");
-        }
-        version.deleteCharAt(version.length() - 1);
-        return version.toString();
     }
 
 }

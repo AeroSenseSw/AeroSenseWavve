@@ -25,7 +25,7 @@ public class GetRadarIdHandler extends AbstractToRadarProtocolDataHandler {
             radarProtocolData.setFunction(FunctionEnum.getRadarId);
             final int timeOut = RequestTimeOut.TIME_OUT;
             RadarProtocolData radarProtocolData2 = (RadarProtocolData) radarTcpServer.invokeSync(addr,
-                    radarProtocolData, invokeContext, timeOut);
+                    radarProtocolData, timeOut);
             return radarProtocolData2.getRadarId();
         } catch (Exception e) {
             log.error("time out ...");

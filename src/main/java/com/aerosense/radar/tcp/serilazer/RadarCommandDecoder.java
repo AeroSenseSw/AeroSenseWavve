@@ -18,7 +18,7 @@ import java.net.InetSocketAddress;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
+ * 
  *
  * @author： jia.w@aerosnese.com
  * @date： 2021/6/16 11:42
@@ -26,17 +26,19 @@ import java.util.List;
  */
 @Slf4j
 public class RadarCommandDecoder implements CommandDecoder {
+    private RadarProtocol radarProtocol;
+
+    public RadarCommandDecoder(RadarProtocol radarProtocol) {
+        this.radarProtocol = radarProtocol;
+    }
 
     @Override
     public void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-
-
         // the less length between response header and request header
-        if (in.readableBytes() >= RadarProtocol.PROTOCOL_HEADER_LEN) {
-
+        if (in.readableBytes() >= RadarProtocol.PROTOCOL_HEADER_LENGTH) {
             in.markReaderIndex();
             byte protocol = in.readByte();
-            if (protocol != RadarProtocol.PROTOCOL_CODE) {
+            if (protocol != radarProtocol.getProtocolCodeByte()) {
                 String emsg = "Unknown protocol: " + protocol;
                 log.error(emsg);
                 throw new RadarException(emsg);
@@ -58,7 +60,7 @@ public class RadarCommandDecoder implements CommandDecoder {
                 int requestId = in.readInt();
                 byte serializer = RadarSerializer.IDX;
                 int timeout = in.readShort();
-                byte[] clazz = RadarProtocol.DATA_CLASS_BYTES;
+                byte[] clazz = RadarProtocol.PROTOCOL_DATA_CLASS_BYTES;
                 int contentLen = in.readInt();
                 byte[] content = null;
                 if (contentLen > 0) {
@@ -84,15 +86,13 @@ public class RadarCommandDecoder implements CommandDecoder {
                 command.setContent(content);
                 out.add(command);
             } else if (type == RpcCommandType.RESPONSE) {
-
                 //decode response
                 short cmdCode = in.readByte();
                 int requestId = in.readInt();
                 byte serializer = RadarSerializer.IDX;
-                in.readShort();
-                short status = 0x0000;
+                short status = in.readShort();
                 int contentLen = in.readInt();
-                byte[] clazz = RadarProtocol.DATA_CLASS_BYTES;
+                byte[] clazz = RadarProtocol.PROTOCOL_DATA_CLASS_BYTES;
                 byte[] content = null;
                 if (contentLen > 0) {
                     if (in.readableBytes() >= contentLen) {
@@ -117,7 +117,6 @@ public class RadarCommandDecoder implements CommandDecoder {
                 command.setContent(content);
                 command.setResponseTimeMillis(System.currentTimeMillis());
                 command.setResponseHost((InetSocketAddress) ctx.channel().remoteAddress());
-
                 out.add(command);
             } else {
                 String emsg = "Unknown command type: " + type;

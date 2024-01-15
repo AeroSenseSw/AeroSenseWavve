@@ -4,7 +4,7 @@ package com.aerosense.radar.tcp.protocol;
 import java.util.Arrays;
 
 /**
- * Created with IntelliJ IDEA.
+ * 
  *
  * @author： jia.w@aerosnese.com
  * @date： 2021/8/4 14:59
@@ -77,16 +77,16 @@ public enum FunctionEnum {
     getBreathBpmLowThreshold(0x03f2),
     /**
      */
-    setBreathBpmHeightThreshold(0x03f4),
+    setBreathBpmHighThreshold(0x03f4),
     /**
      */
-    getBreathBpmHeightThreshold(0x03f5),
+    getBreathBpmHighThreshold(0x03f5),
     /**
      */
-    setBreathingBpmLowThresholdAlarmTime(0x03f7),
+    setBreathBpmThresholdAlarmTime(0x03f7),
     /**
      */
-    getBreathingBpmLowThresholdAlarmTime(0x03f8),
+    getBreathBpmThresholdAlarmTime(0x03f8),
     /**
      */
     settingTheCardiacArrestAlarmTime(0x0402),
@@ -107,11 +107,11 @@ public enum FunctionEnum {
     getHeartRateLowThreshold(0x03fd),
     /**
      */
-    setHeartRateHeightThreshold(0x03ff),
+    setHeartRateHighThreshold(0x03ff),
     /**
      * 、
      */
-    getHeartRateHeightThreshold(0x0400),
+    getHeartRateHighThreshold(0x0400),
     /**
      */
     setLiveBedNoBackReportTime(0x0404),
@@ -156,7 +156,34 @@ public enum FunctionEnum {
 
     /**
      */
-    notifyUpdate(0x0021), issueFirmware(0x0022), updateResult(0x0023);
+    notifyUpdate(0x0021), issueFirmware(0x0022), updateResult(0x0023),
+
+
+    /**设置摔倒上报时间间隔*/
+    setBufferTime(0x0004),
+    /**获取摔倒上报时间间隔*/
+    getBufferTime(0x0005),
+    fallDetect(0x0009),
+    /**获取固件版本*/
+    getRadarFirmwareVersion(0x0013),
+    /**设置安装模式*/
+    setInstallMode(0x1801),
+    /**获取安装模式*/
+    getInstallMode(0x1802),
+    /**设置检测区域*/
+    setDetectionArea(0x1803),
+    /**获取检测区域*/
+    getDetectionArea(0x1804),
+    /**设置床铺位置*/
+    setBedLocation(0x1805),
+    /**获取床铺位置*/
+    getBedLocation(0x1806),
+    /**综合设置安装模式、检测区域、床铺位置*/
+    setIDB(0x1808),
+    /**综合获取安装模式、检测区域、床铺位置取床铺位置*/
+    getIDB(0x1809)
+
+    ;
 
     private final short function;
 

@@ -1,35 +1,34 @@
 package com.aerosense.radar.tcp.service.fromRadar;
 
-import com.google.common.collect.Sets;
 import com.aerosense.radar.tcp.hander.base.AbstractFromRadarProtocolDataHandler;
 import com.aerosense.radar.tcp.hander.callback.RadarHandlerCallBack;
 import com.aerosense.radar.tcp.protocol.FunctionEnum;
 import com.aerosense.radar.tcp.protocol.RadarProtocolData;
+import com.google.common.collect.Sets;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
 /**
- * @author ：ywb
- * @date ：Created in 2022/2/12 10:07
- * @modified By：
+ * @description: Fall detect handler
+ * @author jia.wu
+ * @date 2024/1/11 16:51
+ * @version 1.0.0
  */
 @Service
-public class CreateConnectionHandler extends AbstractFromRadarProtocolDataHandler {
-
-    public CreateConnectionHandler(RadarHandlerCallBack handlerCallBack) {
+public class FallDetectHandler extends AbstractFromRadarProtocolDataHandler {
+    public FallDetectHandler(RadarHandlerCallBack handlerCallBack) {
         super(handlerCallBack);
     }
 
     @Override
     public Object process(RadarProtocolData protocolData) {
-        protocolData.setFunction(FunctionEnum.createConnection);
         handlerCallBack.callBack(protocolData);
         return protocolData.success();
     }
 
     @Override
     public Set<FunctionEnum> interests() {
-        return Sets.newHashSet(FunctionEnum.createConnection);
+        return Sets.newHashSet(FunctionEnum.fallDetect);
     }
 }

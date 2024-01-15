@@ -19,7 +19,7 @@ import org.springframework.util.StringUtils;
 
 
 /**
- * Created with IntelliJ IDEA.
+ * 
  *
  * @author： jia.w@aerosnese.com
  * @date： 2021/8/9 11:58
@@ -82,6 +82,7 @@ public class RadarTcpServerAutoConfiguration implements ApplicationListener<Cont
                 radarTcpServer.registerHandler(new CreateConnectionHandler(radarHandlerCallBack));
                 radarTcpServer.registerHandler(new RollOverOrSitAndCallThePoliceHandler(radarHandlerCallBack));
                 radarTcpServer.registerHandler(new PhysicalActivityReportStatisticsHandler(radarHandlerCallBack));
+                radarTcpServer.registerHandler(new FallDetectHandler(radarHandlerCallBack));
 
                 radarTcpServer.startup();
                 log.info("radar tcp server auto started on {}", radarTcpServer.getServerAddress());

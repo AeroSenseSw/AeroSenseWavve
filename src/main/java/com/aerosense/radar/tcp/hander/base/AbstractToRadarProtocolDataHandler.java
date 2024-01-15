@@ -8,7 +8,9 @@ import com.aerosense.radar.tcp.protocol.RadarProtocolData;
 import com.aerosense.radar.tcp.serilazer.RadarSerializer;
 import com.aerosense.radar.tcp.server.RadarTcpServer;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.PooledByteBufAllocator;
+import io.netty.buffer.Unpooled;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +25,6 @@ import java.util.Set;
 public abstract class AbstractToRadarProtocolDataHandler implements RadarProtocolDataHandler {
     @Autowired
     private RadarTcpServer radarTcpServer;
-    public final static InvokeContext invokeContext = new InvokeContext();
-
-    static {
-        invokeContext.put(InvokeContext.BOLT_CUSTOM_SERIALIZER, RadarSerializer.IDX_BYTE);
-    }
 
     @Override
     public Object process(RadarProtocolData protocolData) throws RemotingException, InterruptedException {
@@ -35,8 +32,7 @@ public abstract class AbstractToRadarProtocolDataHandler implements RadarProtoco
         if (protocolData.getFunction() == FunctionEnum.calibration) {
             timeOut = 10000 * 10;
         }
-        return radarTcpServer.invokeSync(radarTcpServer.getRadarAddress(protocolData.getRadarId()),
-                protocolData, invokeContext, timeOut);
+        return radarTcpServer.invokeSync(protocolData, timeOut);
     }
 
     @Override
@@ -48,13 +44,11 @@ public abstract class AbstractToRadarProtocolDataHandler implements RadarProtoco
         RadarProtocolData radarProtocolData = new RadarProtocolData();
         radarProtocolData.setFunction(functionEnum);
         radarProtocolData.setRadarId(radarId);
-        RadarProtocolData radarProtocolData2 = (RadarProtocolData) process(radarProtocolData);
-        if (radarProtocolData2.getData() == null) {
+        RadarProtocolData radarProtocolDataRet = (RadarProtocolData) process(radarProtocolData);
+        if (radarProtocolDataRet.getData() == null) {
             throw new Exception(functionEnum.getFunction() + "is return null");
         }
-        ByteBuf byteBuf = PooledByteBufAllocator.DEFAULT.heapBuffer();
-        byteBuf.writeBytes(radarProtocolData2.getData());
-        return byteBuf;
+        return Unpooled.wrappedBuffer(radarProtocolDataRet.getData());
     }
 
     abstract public Object process(String radarId) throws Exception;

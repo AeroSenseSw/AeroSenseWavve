@@ -4,7 +4,7 @@ package com.aerosense.radar.tcp.protocol;
 import com.alipay.remoting.ProtocolManager;
 
 /**
- * Created with IntelliJ IDEA.
+ * 
  *
  * @author： jia.w@aerosnese.com
  * @date： 2021/8/3 16:23
@@ -15,6 +15,7 @@ public class RadarProtocolManager {
      * 初始化雷达协议
      */
     public static void initProtocols() {
-        ProtocolManager.registerProtocol(new RadarProtocol(), RadarProtocol.PROTOCOL_CODE);
+        ProtocolManager.registerProtocol(new WavveRadarProtocol(), WavveRadarProtocol.PROTOCOL_CODE);
+        ProtocolManager.registerProtocol(new WavveProRadarProtocol(), WavveProRadarProtocol.PROTOCOL_CODE);
     }
 }
