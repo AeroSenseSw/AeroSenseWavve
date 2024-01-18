@@ -47,14 +47,11 @@ public class RadarProtocolDataServerAsyncProcessor extends AsyncUserProcessor<Ra
             log.debug("request: {}", radarProtocolData);
         }
         boolean registerResult = registerOrBindRadar(bizContext, radarProtocolData);
-
         if (!registerResult) {
             radarTcpServer.softRebootRadar(bizContext.getConnection());
             return;
         }
-
         RadarProtocolDataHandler handler = RadarProtocolDataHandlerManager.getHandler(radarProtocolData.getFunction());
-        radarProtocolData.setRadarId(ConnectionUtil.getRadarId(bizContext.getConnection()));
         if (handler == null) {
             if (log.isWarnEnabled()) {
                 log.warn("no handler response: null {} {}", radarProtocolData.getRadarId(),
@@ -77,39 +74,31 @@ public class RadarProtocolDataServerAsyncProcessor extends AsyncUserProcessor<Ra
     }
 
     private boolean registerOrBindRadar(BizContext bizContext, RadarProtocolData radarProtocolData) {
-        boolean result = false;
         Connection connection = bizContext.getConnection();
         if (radarProtocolData.getFunction() == FunctionEnum.createConnection) {
-            if (connection.getAttribute(ConnectionUtil.ATTR_RADAR_Id) == null) {
-                String remoteAddress = bizContext.getRemoteAddress();
-                if (remoteAddress == null || remoteAddress.length() == 0) {
-                    log.warn("register radar failure, remote address parse to be null");
-                    return false;
-                }
-                byte[] data = radarProtocolData.getData();
-                byte type = data[0];
-                String version = RadarProtocolUtil.getHardwareVersion(Arrays.copyOfRange(data, 1, 5));
-                byte[] idBytes = Arrays.copyOfRange(data, 5, data.length);
-                String id = ByteBufUtil.hexDump(idBytes).toUpperCase(Locale.ROOT);
-                connection.setAttributeIfAbsent(ConnectionUtil.ATTR_TYPE, type);
-                connection.setAttributeIfAbsent(ConnectionUtil.ATTR_RADAR_Id, id);
-                connection.setAttribute(ConnectionUtil.ATTR_VERSION, version);
-                radarAddressMap.bindAddress(remoteAddress, id);
-                log.info("register radar successful {} - {}", id, remoteAddress);
-                result = true;
-                radarProtocolData.setRadarId(id);
-                radarProtocolData.setRadarVersion(version);
-            }
-        } else {
-            //绑定数据
-            if (StringUtils.isEmpty(ConnectionUtil.getRadarId(bizContext.getConnection()))) {
+            String remoteAddress = bizContext.getRemoteAddress();
+            if (remoteAddress == null || remoteAddress.length() == 0) {
+                log.warn("register radar failure, remote address parse to be null");
                 return false;
             }
-            radarProtocolData.setRadarId(ConnectionUtil.getRadarId(bizContext.getConnection()));
-            radarProtocolData.setRadarVersion(ConnectionUtil.getRadarVersion(bizContext.getConnection()));
-            result = true;
+            byte[] data = radarProtocolData.getData();
+            byte type = data[0];
+            String version = RadarProtocolUtil.getHardwareVersion(Arrays.copyOfRange(data, 1, 5));
+            byte[] idBytes = Arrays.copyOfRange(data, 5, data.length);
+            String id = ByteBufUtil.hexDump(idBytes).toUpperCase(Locale.ROOT);
+            boolean bind = ConnectionUtil.bindIdAndVersion(connection, id, version, type);
+            if (bind) {
+                radarAddressMap.bindAddress(remoteAddress, id);
+                log.info("register radar successful {} - {}", id, remoteAddress);
+            }
         }
-        return result;
+        //绑定数据
+        if (StringUtils.isEmpty(ConnectionUtil.getRadarId(bizContext.getConnection()))) {
+            return false;
+        }
+        radarProtocolData.setRadarId(ConnectionUtil.getRadarId(bizContext.getConnection()));
+        radarProtocolData.setRadarVersion(ConnectionUtil.getRadarVersion(bizContext.getConnection()));
+        return true;
     }
 
     @Override

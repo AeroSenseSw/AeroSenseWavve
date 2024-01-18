@@ -23,13 +23,13 @@ public class HeartRateHeightBpmHandler extends AbstractFromRadarProtocolDataHand
 
     @Override
     public Object process(RadarProtocolData protocolData) {
-        protocolData.setFunction(FunctionEnum.heartRateHeightBpm);
+        protocolData.setFunction(FunctionEnum.heartRateHighBpm);
         handlerCallBack.callBack(protocolData);
         return null;
     }
 
     @Override
     public Set<FunctionEnum> interests() {
-        return Sets.newHashSet(FunctionEnum.heartRateHeightBpm);
+        return Sets.newHashSet(FunctionEnum.heartRateHighBpm);
     }
 }

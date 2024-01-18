@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.aerosense</groupId>
     <artifactId>AerosenseWavve</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <properties>
         <java.version>1.8</java.version>
     </properties>
@@ -51,42 +51,11 @@
             <optional>true</optional>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
-
-    <repositories>
-        <repository>
-            <id>rdc-releases</id>
-            <url>https://packages.aliyun.com/maven/repository/2127528-release-1kWZXx/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>rdc-snapshots</id>
-            <url>https://packages.aliyun.com/maven/repository/2127528-snapshot-bKQ7fS/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>versions-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.9.1.2184</version>
-            </plugin>
-        </plugins>
-    </build>
 </project>

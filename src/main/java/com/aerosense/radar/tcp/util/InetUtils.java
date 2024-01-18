@@ -44,7 +44,7 @@ public class InetUtils {
         parseSelfIp();
     }
 
-    public static void parseSelfIp() {
+    public static String parseSelfIp() {
         String tmpSelfIP = null;
         if (preferHostnameOverIP) {
             InetAddress inetAddress;
@@ -70,6 +70,7 @@ public class InetUtils {
             }
         }
         selfIP = tmpSelfIP;
+        return selfIP;
     }
 
     public static String getSelfIP() {

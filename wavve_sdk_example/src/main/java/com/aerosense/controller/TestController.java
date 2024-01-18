@@ -9,6 +9,7 @@ import com.alipay.remoting.exception.RemotingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.aerosense.radar.tcp.hander.ServerRequestRadarHandler;
 
 /**
  * @author ：aerosense
@@ -19,22 +20,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
     @Autowired
-    private SetRadarParams setRadarParams;
-    @Autowired
-    private GetReportInterval getReportInterval;
+    private ServerRequestRadarHandler serverRequestRadarHandler;
 
     @RequestMapping("/testGet")
     public Object testGet() throws Exception {
-        return getReportInterval.process("13360111504B57313534033855");
+        String radarId = "13360111504B57313534033855";
+        return serverRequestRadarHandler.getReportInterval(radarId);
     }
 
     @RequestMapping("/testSet")
     public Object testSet() throws RemotingException, InterruptedException {
-        RadarProtocolData radarProtocolData = new RadarProtocolData();
-        radarProtocolData.setRadarId("13360111504B57313534033855");
-        radarProtocolData.setFunction(FunctionEnum.setReportInterval);
-        radarProtocolData.setData(ByteUtil.intToByteBig(100));
-        return setRadarParams.process(radarProtocolData);
+        String radarId = "13360111504B57313534033855";
+        return serverRequestRadarHandler.setReportInterval(radarProtocolData, 100);
     }
 
 }

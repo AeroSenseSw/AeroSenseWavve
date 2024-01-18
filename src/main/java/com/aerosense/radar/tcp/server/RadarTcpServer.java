@@ -175,7 +175,7 @@ public class RadarTcpServer extends RpcServer {
     public Object invokeSync(RadarProtocolData requestObj, InvokeContext invokeContext, int timeoutMillis)
             throws RemotingException, InterruptedException {
         Connection radarConnection = getRadarConnectionThrow(requestObj.getRadarId());
-        return invokeSync(radarConnection, requestObj, invokeContext, timeoutMillis);
+        return invokeSyncWithConnection(radarConnection, requestObj, invokeContext, timeoutMillis);
     }
 
     public Object invokeSyncWithConnection(Connection connection, RadarProtocolData requestObj, int timeoutMillis)

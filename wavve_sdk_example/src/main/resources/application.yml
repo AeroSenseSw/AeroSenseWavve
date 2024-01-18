@@ -1,17 +1,7 @@
-logging:
-  level:
-    org:
-      springframework:
-        boot:
-          autoconfigure: error
-
 radar:
   tcp:
     enable: true
     host: 0.0.0.0 # radar server ip
     port: 8802 # radar server port
     address-map: HashMap #RedisMap or HashMap
-    print-online-radar: true
-    dump-hex: false
-    log-firmware-upgrade: true
     idle-timeout: 120000

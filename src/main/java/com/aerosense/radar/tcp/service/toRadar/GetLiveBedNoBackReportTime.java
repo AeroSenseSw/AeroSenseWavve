@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class GetLiveBedNoBackReportTime extends AbstractToRadarProtocolDataHandler {
 
     public Integer process(String radarId) throws Exception {
-        ByteBuf byteBuf = super.processDo(radarId, FunctionEnum.getLiveBedNoBackReportTime);
+        ByteBuf byteBuf = super.processDo(radarId, FunctionEnum.getBedExitAlertTimer);
         int readInt = byteBuf.readInt();
         byteBuf.release();
         return readInt / 60;

@@ -30,4 +30,15 @@ public class ConnectionUtil {
         return obj==null?null: (byte) obj;
     }
 
+    public static boolean bindIdAndVersion(Connection connection, String id, String version, Byte type) {
+        Object obj = connection.setAttributeIfAbsent(ATTR_RADAR_Id, id);
+        if(obj==null){
+            connection.setAttribute(ATTR_VERSION, version);
+            connection.setAttribute(ATTR_TYPE, type);
+            return true;
+        }else{
+            connection.setAttribute(ATTR_VERSION, version);
+        }
+        return false;
+    }
 }

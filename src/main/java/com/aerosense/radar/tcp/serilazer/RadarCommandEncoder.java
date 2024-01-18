@@ -8,6 +8,7 @@ import com.alipay.remoting.rpc.RequestCommand;
 import com.alipay.remoting.rpc.ResponseCommand;
 import com.alipay.remoting.rpc.RpcCommand;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.Attribute;
 import lombok.extern.slf4j.Slf4j;
@@ -66,6 +67,10 @@ public class RadarCommandEncoder implements CommandEncoder {
             if (cmd.getContentLength() > 0) {
                 out.writeBytes(cmd.getContent());
             }
+
+            StringBuilder dump = new StringBuilder();
+            ByteBufUtil.appendPrettyHexDump(dump, out);
+            log.info("send bytes: {} - {}\n{}", ctx.channel(), out.readableBytes(), dump);
         } else {
             String warnMsg = "cancel encode msg type [" + msg.getClass() + "] is not subclass of RpcCommand";
             log.warn(warnMsg);

@@ -11,6 +11,7 @@ import com.alipay.remoting.rpc.protocol.RpcCommandCode;
 import com.alipay.remoting.rpc.protocol.RpcRequestCommand;
 import com.alipay.remoting.rpc.protocol.RpcResponseCommand;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,6 +37,9 @@ public class RadarCommandDecoder implements CommandDecoder {
     public void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
         // the less length between response header and request header
         if (in.readableBytes() >= RadarProtocol.PROTOCOL_HEADER_LENGTH) {
+            StringBuilder dump = new StringBuilder();
+            ByteBufUtil.appendPrettyHexDump(dump, in);
+            log.info("receive bytes {} - {}\n{}", ctx.channel(), in.readableBytes(), dump);
             in.markReaderIndex();
             byte protocol = in.readByte();
             if (protocol != radarProtocol.getProtocolCodeByte()) {

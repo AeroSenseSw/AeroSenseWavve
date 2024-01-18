@@ -460,7 +460,7 @@ public class ServerRequestRadarHandler {
      */
     public int getBedExitAlertTimer(String radarId) throws RemotingException {
         RadarProtocolData radarProtocolData = RadarProtocolData.newInstance(radarId,
-                FunctionEnum.getLiveBedNoBackReportTime, ByteUtil.BYTES_0);
+                FunctionEnum.getBedExitAlertTimer, ByteUtil.BYTES_0);
         RadarProtocolData retObj = invokeToRadar(radarProtocolData);
         return ByteUtil.bytes2IntBig(retObj.getData());
     }
@@ -482,7 +482,7 @@ public class ServerRequestRadarHandler {
             throw new IllegalArgumentException("bedExitAlertTimer value invalid : " + bedExitAlertTimer);
         }
         RadarProtocolData radarProtocolData = RadarProtocolData.newInstance(radarId,
-                FunctionEnum.setLiveBedNoBackReportTime, ByteUtil.intToByteBig(bedExitAlertTimer));
+                FunctionEnum.setBedExitAlertTimer, ByteUtil.intToByteBig(bedExitAlertTimer));
         RadarProtocolData retObj = invokeToRadar(radarProtocolData);
         return RadarProtocolUtil.isRetSuccess(retObj);
     }

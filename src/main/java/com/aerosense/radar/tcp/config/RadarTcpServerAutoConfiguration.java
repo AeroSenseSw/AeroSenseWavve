@@ -40,8 +40,7 @@ public class RadarTcpServerAutoConfiguration implements ApplicationListener<Cont
             InetUtils.setPreferHostnameOverIP(radarTcpServerProperties.isPreferHostnameOverIP());
             InetUtils.addPreferredNetworks(radarTcpServerProperties.getPreferredeNetworks());
             InetUtils.addIgnoredInterfaces(radarTcpServerProperties.getIgnoredInterfaces());
-            InetUtils.parseSelfIp();
-            serverAddress = InetUtils.getSelfIP() + ":" + radarTcpServerProperties.getPort();
+            serverAddress = InetUtils.parseSelfIp() + ":" + radarTcpServerProperties.getPort();
         } else {
             serverAddress = radarTcpServerProperties.getHost() + ":" + radarTcpServerProperties.getPort();
         }

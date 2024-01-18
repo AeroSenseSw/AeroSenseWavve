@@ -35,7 +35,7 @@ public enum FunctionEnum {
     breathLowBpmAlert(0x03f3),
     /**
      */
-    breathHeightBpmAlert(0x03f6),
+    breathHighBpmAlert(0x03f6),
     /**
      */
     cardiacArrest(0x03fb),
@@ -44,10 +44,7 @@ public enum FunctionEnum {
     heartRateLowBpm(0x03fe),
     /**
      */
-    heartRateHeightBpm(0x0401),
-    /**
-     */
-//    getVersion(0x00),
+    heartRateHighBpm(0x0401),
     /**
      */
     setReportInterval(0x03e9),
@@ -114,10 +111,10 @@ public enum FunctionEnum {
     getHeartRateHighThreshold(0x0400),
     /**
      */
-    setLiveBedNoBackReportTime(0x0404),
+    setBedExitAlertTimer(0x0404),
     /**
      */
-    getLiveBedNoBackReportTime(0x0405),
+    getBedExitAlertTimer(0x0405),
     /**
      */
     setLongTimeNoTurnOverReportTime(0x0407),
