@@ -58,6 +58,7 @@ public class RadarReportOrAlertCallBack implements RadarHandlerCallBack {
                         float x = byteBuf.readFloat();
                         float y = byteBuf.readFloat();
                         callBackDto.setData(new FallDetectDto(x, y));
+                        break;
                     default:
                         int readInt = byteBuf.readInt();
                         callBackDto.setData(readInt);

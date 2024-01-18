@@ -4,6 +4,7 @@ import com.aerosense.radar.tcp.domain.dto.CallBackDto;
 import com.aerosense.radar.tcp.domain.dto.ReportDto;
 import com.aerosense.radar.tcp.hander.callback.RadarHandlerCallBackForConsumer;
 import com.aerosense.radar.tcp.protocol.FunctionEnum;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,10 +13,12 @@ import org.springframework.stereotype.Service;
  * Customize the processor to process radar data
  */
 @Service
+@Slf4j
 public class ConsumerRadarHandler implements RadarHandlerCallBackForConsumer {
 
     @Override
     public void callBack(CallBackDto callBackDto) {
+        log.info("callback do {}", callBackDto);
         if (callBackDto.getFunctionEnum() == FunctionEnum.radarReport) {
             // heart rate data
             ReportDto reportDto = (ReportDto) callBackDto.getData();
