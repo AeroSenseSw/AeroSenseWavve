@@ -31,6 +31,7 @@ public class RadarFirmwareUpgradeHandler {
     public static final int DEFAULT_RETRY_COUNT = 5;
     private final RadarTcpServer radarTcpServer;
     private static final int BLOCK_SIZE = 256;
+    private static final int WAVVE_PRO_BLOCK_SIZE = 1000;
     private static final int TIMEOUT_MILLS = 60*1000;
 
     public RadarFirmwareUpgradeHandler(RadarTcpServer radarTcpServer) {
@@ -55,7 +56,8 @@ public class RadarFirmwareUpgradeHandler {
             }
         }
         RadarTypeEnum radarTypeEnum = RadarTypeEnum.fromType(types.get(0));
-        byte[][] firmwareData = splitAndCrc16(radarTypeEnum, dto.getFirmwareData(), BLOCK_SIZE);
+        int blockSize = RadarTypeEnum.WAVVE_PRO==radarTypeEnum?WAVVE_PRO_BLOCK_SIZE:BLOCK_SIZE;
+        byte[][] firmwareData = splitAndCrc16(radarTypeEnum, dto.getFirmwareData(), blockSize);
         int length = dto.getFirmwareData().length;
         List<String> radarIds = dto.getRadarIds().stream()
                 .map(radarId -> doUpgrade(radarId, length, firmwareData))

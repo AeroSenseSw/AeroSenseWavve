@@ -2,6 +2,6 @@ radar:
   tcp:
     enable: true
     host: 0.0.0.0 # radar server ip
-    port: 8802 # radar server port
+    port: 8801 # radar server port
     address-map: HashMap #RedisMap or HashMap
     idle-timeout: 120000

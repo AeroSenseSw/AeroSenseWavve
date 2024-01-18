@@ -26,8 +26,8 @@ public class ConsumerRadarHandler implements RadarHandlerCallBackForConsumer {
             //do something
         } else {
             //radar alert
-            if (callBackDto.getFunctionEnum() == FunctionEnum.breathHeightBpmAlert) {
-                // breathHeightBpmAlert
+            if (callBackDto.getFunctionEnum() == FunctionEnum.breathHighBpmAlert) {
+                // breathHighBpmAlert
             }
             // more protocol see com.aerosense.radar.tcp.protocol.FunctionEnum
             // do something
