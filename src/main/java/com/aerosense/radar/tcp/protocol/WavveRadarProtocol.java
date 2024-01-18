@@ -1,4 +1,3 @@
-
 package com.aerosense.radar.tcp.protocol;
 
 import com.alipay.remoting.ProtocolCode;

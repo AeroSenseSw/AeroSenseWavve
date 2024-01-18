@@ -1,10 +1,14 @@
 package com.aerosense.radar.tcp.protocol;
 
 import java.util.Arrays;
-
+/**
+ * @description: radar type
+ * @author jia.wu
+ * @date 2024/1/18 14:35
+ * @version 1.0.0
+ */
 public enum RadarTypeEnum {
 
-    /**呼吸心率雷达*/
     WAVVE((byte)0x01, "WAVVE", WavveRadarProtocol.PROTOCOL_CODE_BYTE),
     WAVVE_PRO((byte)0x03, "WAVVE PRO", WavveProRadarProtocol.PROTOCOL_CODE_BYTE)
     ;

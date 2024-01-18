@@ -1,4 +1,3 @@
-
 package com.aerosense.radar.tcp.protocol;
 
 import com.aerosense.radar.tcp.util.ByteUtil;
@@ -99,12 +98,12 @@ public class RadarProtocolData implements Serializable {
     }
 
     public final RadarProtocolData success(){
-        this.setData(ByteUtil.intToByteBig(1));
+        this.setData(ByteUtil.intToByteBig(RadarProtocolConsts.RET_SUCCESS));
         return this;
     }
 
     public final RadarProtocolData failure(){
-        this.setData(ByteUtil.intToByteBig(0));
+        this.setData(ByteUtil.intToByteBig(RadarProtocolConsts.RET_FAILURE));
         return this;
     }
 

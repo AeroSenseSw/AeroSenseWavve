@@ -31,7 +31,7 @@ public class RadarProtocolUtil {
      */
     public static String getHardwareVersion(byte[] bytes){
         if (null == bytes) {
-            return "unknown";
+            return "";
         }
         StringBuilder version = new StringBuilder();
         byte[] temp = new byte[4];
@@ -50,6 +50,6 @@ public class RadarProtocolUtil {
      */
     public static boolean isRetSuccess(RadarProtocolData retObj) {
         return retObj!=null&&retObj.getFunction()!=FunctionEnum.UNDEFINED
-                &&ByteUtil.bytes2IntBig(retObj.getData()) == 1;
+                &&ByteUtil.bytes2IntBig(retObj.getData()) == RadarProtocolConsts.RET_SUCCESS;
     }
 }

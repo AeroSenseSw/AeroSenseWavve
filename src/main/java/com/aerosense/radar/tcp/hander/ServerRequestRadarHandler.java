@@ -554,7 +554,7 @@ public class ServerRequestRadarHandler {
     public boolean setTurnOverAlertStatus(String radarId, int turnOverAlertStatus)
             throws RemotingException {
         if (turnOverAlertStatus != RadarProtocolConsts.ALGORITHM_STATUS_CLOSE &&
-                turnOverAlertStatus != RadarProtocolConsts.ALGORITHM_STATUS_TURN_OVER_OPEN) {
+                turnOverAlertStatus != RadarProtocolConsts.ALGORITHM_STATUS_OPEN) {
             throw new IllegalArgumentException("turnOverAlertStatus value invalid : " + turnOverAlertStatus);
         }
         RadarProtocolData radarProtocolData = RadarProtocolData.newInstance(radarId,

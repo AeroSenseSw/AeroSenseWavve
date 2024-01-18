@@ -2,7 +2,6 @@ package com.aerosense.radar.tcp.protocol;
 
 import com.alipay.remoting.Protocol;
 import com.alipay.remoting.ProtocolCode;
-import com.alipay.remoting.config.switches.ProtocolSwitch;
 
 import java.nio.charset.StandardCharsets;
 
