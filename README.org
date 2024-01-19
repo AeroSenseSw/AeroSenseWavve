@@ -1,5 +1,4 @@
-| Wavve  | Wavve Pro |
-| Support  | Support |
+
 
 * How to use?
 ** Step 1: Install the SDK
@@ -11,3 +10,8 @@
 
 * Where to configure?
 wavve_sdk_example/src/main/resources/application.yml
+
+* Device support
+|  Wavve   | Wavve Pro   |
+|  ----  | ----  |
+| Support  | Support |
