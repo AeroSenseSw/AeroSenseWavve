@@ -13,5 +13,4 @@ wavve_sdk_example/src/main/resources/application.yml
 
 * Device support
 |  Wavve   | Wavve Pro   |
-|  ----  | ----  |
-| Support  | Support |
+|✔|✔|
