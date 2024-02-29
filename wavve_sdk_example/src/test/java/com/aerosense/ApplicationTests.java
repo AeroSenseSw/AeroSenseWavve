@@ -10,8 +10,9 @@ import com.aerosense.radar.tcp.protocol.RadarTypeEnum;
 import com.aerosense.radar.tcp.server.RadarTcpServer;
 import com.alipay.remoting.Connection;
 import com.google.common.collect.Lists;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.StreamUtils;
@@ -21,9 +22,8 @@ import java.util.List;
 import java.util.Set;
 
 @SpringBootTest
-@Slf4j
 class ApplicationTests {
-
+    private static final Logger log = LoggerFactory.getLogger(ApplicationTests.class);
     @Autowired
     private ServerRequestRadarHandler serverRequestRadarHandler;
     @Autowired
