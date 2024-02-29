@@ -1,3 +1,5 @@
+
+
 * How to use?
 ** Step 1: Install the SDK
 > mvn install
@@ -8,3 +10,7 @@
 
 * Where to configure?
 wavve_sdk_example/src/main/resources/application.yml
+
+* Device support
+|  Wavve   | Wavve Pro   |
+|✔|✔|
