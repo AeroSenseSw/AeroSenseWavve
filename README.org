@@ -8,6 +8,16 @@
 ** Step 3: Run your app
 > mvn spring-boot:run
 
+**Important To Note**
+- Ensure you have JDK 8 installed and Maven
+- Make sure that MAVEN_HOME, JAVA_HOME, and PATH system variables are properly defined
+	-For MAVEN_HOME, point it to the root Maven folder that directly houses the 'bin' folder.
+	-For JAVA_HOME, point it to the root jdk 8 folder.
+	-In the Path, add %MAVEN_HOME%\bin and %JAVA_HOME%\bin
+
+- If there are problems with step 3 and the error shows "Error starting server", edit the
+"application.yml" and "RadarTCPServerProperties.java" files, to change the Port Number to one that is unused.
+
 * Where to configure?
 wavve_sdk_example/src/main/resources/application.yml
 
