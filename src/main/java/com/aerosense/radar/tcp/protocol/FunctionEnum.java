@@ -156,28 +156,28 @@ public enum FunctionEnum {
     notifyUpdate(0x0021), issueFirmware(0x0022), updateResult(0x0023),
 
 
-    /**设置摔倒上报时间间隔*/
+    /**setBufferTime*/
     setBufferTime(0x0004),
-    /**获取摔倒上报时间间隔*/
+    /**getBufferTime*/
     getBufferTime(0x0005),
     fallDetect(0x0009),
-    /**获取固件版本*/
+    /**getRadarFirmwareVersion*/
     getRadarFirmwareVersion(0x0013),
-    /**设置安装模式*/
+    /**setInstallMode*/
     setInstallMode(0x1801),
-    /**获取安装模式*/
+    /**getInstallMode*/
     getInstallMode(0x1802),
-    /**设置检测区域*/
+    /**setDetectionArea*/
     setDetectionArea(0x1803),
-    /**获取检测区域*/
+    /**getDetectionArea*/
     getDetectionArea(0x1804),
-    /**设置床铺位置*/
+    /**setBedLocation*/
     setBedLocation(0x1805),
-    /**获取床铺位置*/
+    /**getBedLocation*/
     getBedLocation(0x1806),
-    /**综合设置安装模式、检测区域、床铺位置*/
+    /**Comprehensively set the installation mode, detection area, and bed position*/
     setIDB(0x1808),
-    /**综合获取安装模式、检测区域、床铺位置取床铺位置*/
+    /**Comprehensively get the installation mode, detection area, and bed position*/
     getIDB(0x1809)
 
     ;

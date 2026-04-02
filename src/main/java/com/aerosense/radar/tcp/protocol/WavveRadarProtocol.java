@@ -12,7 +12,7 @@ import com.alipay.remoting.ProtocolCode;
  *
  * proto: protocol code for protocol magic number:12
  * ver: protocol version:1
- * type: package type.   request:1   response:0   request oneway:2(一次性请求，服务器不会返回状态）
+ * type: package type.   request:1   response:0   request oneway:2
  * cmd: cmd code for remoting command. heartbeat:0  request:1   response:2
  * requestId: id of request,auto increment from 1
  * timeout: client wait the response max milliseconds (0-32768)

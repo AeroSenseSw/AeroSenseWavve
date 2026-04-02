@@ -11,9 +11,7 @@ import com.alipay.remoting.ProtocolManager;
  * @version: 1.0
  */
 public class RadarProtocolManager {
-    /**
-     * 初始化雷达协议
-     */
+
     public static void initProtocols() {
         ProtocolManager.registerProtocol(new WavveRadarProtocol(), WavveRadarProtocol.PROTOCOL_CODE);
         ProtocolManager.registerProtocol(new WavveProRadarProtocol(), WavveProRadarProtocol.PROTOCOL_CODE);

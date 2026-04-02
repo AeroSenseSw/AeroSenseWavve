@@ -50,7 +50,6 @@ public class ByteUtil {
     }
 
     /**
-     * byte数组到int的转换(大端)
      *
      * @param bytes
      * @param position

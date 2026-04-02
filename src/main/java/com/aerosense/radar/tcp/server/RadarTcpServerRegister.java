@@ -20,10 +20,7 @@ public abstract class RadarTcpServerRegister {
         registerToRadarTcpServer(radarTcpServer);
     }
 
-    /**
-     * 执行注册动作
-     * @param radarTcpServer
-     */
+
     protected abstract void registerToRadarTcpServer(RadarTcpServer radarTcpServer);
 
     protected RadarTcpServer getRadarTcpServer(){

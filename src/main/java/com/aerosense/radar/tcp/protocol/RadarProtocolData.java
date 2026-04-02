@@ -20,13 +20,13 @@ public class RadarProtocolData implements Serializable {
     /** For serialization  */
     private static final long serialVersionUID = 1;
 
-    /**函数接口*/
+    /**function*/
     private FunctionEnum    function;
-    /**雷达id*/
+    /**radarId*/
     private String          radarId;
-    /**雷达版本号*/
+    /**radarVersion*/
     private String          radarVersion;
-    /**雷达上报数据*/
+    /**data*/
     private byte[]          data = new byte[4];
 
     public FunctionEnum getFunction() {
